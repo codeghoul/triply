@@ -31,6 +31,4 @@ public class VehicleModelEntity extends BaseEntity {
     private String make;
 
     private String name;
-
-    private Double emissionPerKm;
 }
