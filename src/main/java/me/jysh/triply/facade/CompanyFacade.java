@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.jysh.triply.constant.Constants;
 import me.jysh.triply.dtos.CompanyEntry;
 import me.jysh.triply.dtos.CompanyFleetMileageUploadEntry;
@@ -34,6 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class CompanyFacade {
@@ -72,12 +74,25 @@ public class CompanyFacade {
     return employeeEntity;
   }
 
+  /**
+   * Creates a new company.
+   *
+   * @param company The CompanyEntry to create.
+   * @return The created CompanyEntry.
+   */
   @Transactional
   public CompanyEntry createCompany(final CompanyEntry company) {
     final CompanyEntity companyEntity = CompanyMapper.toEntity(company);
     return companyService.save(companyEntity);
   }
 
+  /**
+   * Uploads a list of employees for a company from a CSV file.
+   *
+   * @param companyId The ID of the company.
+   * @param file      The CSV file containing employee data.
+   * @return A list of EmployeeEntry objects created from the CSV file.
+   */
   @Transactional
   public List<EmployeeEntry> uploadEmployees(final Long companyId, final MultipartFile file) {
     try {
@@ -99,10 +114,22 @@ public class CompanyFacade {
 
       return employeeService.saveAll(employeeEntities);
     } catch (IOException e) {
+      log.error("Error occurred during employee upload for company with ID {}: {}", companyId,
+          e.getMessage());
       throw new RuntimeException(e);
     }
   }
 
+  /**
+   * Uploads mileage data for a company's fleet from a CSV file.
+   *
+   * @param companyId The ID of the company.
+   * @param year      The year of the mileage data.
+   * @param month     The month of the mileage data.
+   * @param week      The week of the mileage data.
+   * @param file      The CSV file containing mileage data.
+   * @return A list of MileageEntry objects created from the CSV file.
+   */
   @Transactional
   public List<MileageEntry> uploadEmission(final Long companyId, final Year year, final Month month,
       final Integer week, final MultipartFile file) {
@@ -145,6 +172,8 @@ public class CompanyFacade {
 
       return mileageService.saveAll(toStore);
     } catch (IOException e) {
+      log.error("Error occurred during mileage upload for company with ID {}: {}", companyId,
+          e.getMessage());
       throw new RuntimeException(e);
     }
   }
