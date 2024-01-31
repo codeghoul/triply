@@ -1,4 +1,4 @@
-package me.jysh.triply.interceptors;
+package me.jysh.triply.config.interceptors;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;

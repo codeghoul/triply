@@ -1,7 +1,7 @@
 package me.jysh.triply.config;
 
 import lombok.RequiredArgsConstructor;
-import me.jysh.triply.interceptors.AuthenticationInterceptor;
+import me.jysh.triply.config.interceptors.AuthenticationInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

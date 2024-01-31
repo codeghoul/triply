@@ -5,21 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Collection;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeEntry {
+public class CompanyEntry {
 
     private Long id;
 
-    private String username;
-
-    private Long companyId;
-
-    private Collection<String> roles;
-
-    private VehicleEntry vehicle;
+    private String name;
 }

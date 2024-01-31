@@ -6,7 +6,7 @@ import me.jysh.triply.dtos.RefreshTokenEntry;
 import me.jysh.triply.dtos.TokenEntry;
 import me.jysh.triply.dtos.response.LoginResponse;
 import me.jysh.triply.dtos.response.RefreshResponse;
-import me.jysh.triply.exception.EmployeeNotFoundException;
+import me.jysh.triply.exception.NotFoundException;
 import me.jysh.triply.exception.LoginException;
 import me.jysh.triply.service.EmployeeService;
 import me.jysh.triply.service.TokenService;
@@ -27,7 +27,7 @@ public class AuthFacade {
             final EmployeeEntry employeeEntry = employeeService.findByEmployeeIdAndPassword(employeeId, password);
             final TokenEntry tokens = tokenService.createTokens(employeeEntry);
             return new LoginResponse(employeeEntry, tokens);
-        } catch (EmployeeNotFoundException e) {
+        } catch (NotFoundException e) {
             throw new LoginException(employeeId);
         }
     }
