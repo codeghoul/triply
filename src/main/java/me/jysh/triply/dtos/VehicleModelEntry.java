@@ -14,13 +14,13 @@ import me.jysh.triply.dtos.enums.FuelType;
 @JsonPropertyOrder({"make", "name", "fuelType", "fuelEmissionFactor"})
 public class VehicleModelEntry {
 
-    private Long id;
+  private Long id;
 
-    private String make;
+  private String make;
 
-    private String name;
+  private String name;
 
-    private FuelType fuelType;
+  private FuelType fuelType;
 
-    private Double fuelEmissionFactor;
+  private Double fuelEmissionFactor;
 }

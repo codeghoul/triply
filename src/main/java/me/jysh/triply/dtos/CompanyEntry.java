@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CompanyEntry {
 
-    private Long id;
+  private Long id;
 
-    private String name;
+  private String name;
 }

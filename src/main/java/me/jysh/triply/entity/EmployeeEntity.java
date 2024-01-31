@@ -12,39 +12,38 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import java.util.Collection;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.Collection;
 
 @Data
 @Entity
 @Table(name = "employee", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_employee", columnNames = {"companyId", "username"})
+    @UniqueConstraint(name = "uk_employee", columnNames = {"companyId", "username"})
 })
 @EqualsAndHashCode(callSuper = true)
 public class EmployeeEntity extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
 
-    private String username;
+  private String username;
 
-    private String password;
+  private String password;
 
-    private Long companyId;
+  private Long companyId;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "employee_role",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Collection<RoleEntity> roles;
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+      name = "employee_role",
+      joinColumns = @JoinColumn(name = "employee_id"),
+      inverseJoinColumns = @JoinColumn(name = "role_id")
+  )
+  private Collection<RoleEntity> roles;
 
-    @OneToOne
-    @JoinColumn(name = "vehicle_id")
-    private VehicleEntity vehicle;
+  @OneToOne
+  @JoinColumn(name = "vehicle_id")
+  private VehicleEntity vehicle;
 }

@@ -10,16 +10,16 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonPropertyOrder({"employeeID", "password", "registrationNumber", "vehicleModel", "admin"})
+@JsonPropertyOrder({"employeeId", "password", "registrationNumber", "vehicleModel", "admin"})
 public class CompanyFleetUploadEntry {
 
-    private String employeeID;
+  private String employeeId;
 
-    private String password;
+  private String password;
 
-    private String registrationNumber;
+  private String registrationNumber;
 
-    private String vehicleModel;
+  private String vehicleModel;
 
-    private Boolean admin;
+  private Boolean admin;
 }

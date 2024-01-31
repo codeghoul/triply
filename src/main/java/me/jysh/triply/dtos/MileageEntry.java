@@ -1,12 +1,11 @@
 package me.jysh.triply.dtos;
 
+import java.time.Month;
+import java.time.Year;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.Month;
-import java.time.Year;
 
 @Getter
 @Setter
@@ -14,19 +13,19 @@ import java.time.Year;
 @AllArgsConstructor
 public class MileageEntry {
 
-    private Long id;
+  private Long id;
 
-    private Long vehicleId;
+  private Long vehicleId;
 
-    private Double distanceTravelled;
+  private Double distanceTravelled;
 
-    private Double energyConsumed;
+  private Double energyConsumed;
 
-    private Double fuelConsumed;
+  private Double fuelConsumed;
 
-    private Year year;
+  private Year year;
 
-    private Month month;
+  private Month month;
 
-    private int week;
+  private int week;
 }

@@ -11,11 +11,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class SecurityConfig implements WebMvcConfigurer {
 
-    final AuthenticationInterceptor authNInterceptor;
+  final AuthenticationInterceptor authNInterceptor;
 
-    @Override
-    public void addInterceptors(final InterceptorRegistry registry) {
-        registry.addInterceptor(authNInterceptor)
-                .excludePathPatterns("/auth/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**");
-    }
+  @Override
+  public void addInterceptors(final InterceptorRegistry registry) {
+    registry.addInterceptor(authNInterceptor)
+        .excludePathPatterns("/auth/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**");
+  }
 }

@@ -1,11 +1,10 @@
 package me.jysh.triply.dtos;
 
+import java.util.Collection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Collection;
 
 @Getter
 @Setter
@@ -13,13 +12,13 @@ import java.util.Collection;
 @AllArgsConstructor
 public class EmployeeEntry {
 
-    private Long id;
+  private Long id;
 
-    private String username;
+  private String username;
 
-    private Long companyId;
+  private Long companyId;
 
-    private Collection<String> roles;
+  private Collection<String> roles;
 
-    private VehicleEntry vehicle;
+  private VehicleEntry vehicle;
 }

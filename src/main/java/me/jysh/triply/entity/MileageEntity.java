@@ -6,33 +6,33 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import java.time.Month;
 import java.time.Year;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
 @Table(name = "mileage")
 @EqualsAndHashCode(callSuper = true)
 public class MileageEntity extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
 
-    private Long vehicleId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
 
-    private Double distanceTravelled;
+  private Long vehicleId;
 
-    private Double energyConsumed;
+  private Double distanceTravelled;
 
-    private Double fuelConsumed;
+  private Double energyConsumed;
 
-    private Year year;
+  private Double fuelConsumed;
 
-    private Month month;
+  private Year year;
 
-    private Integer week;
+  private Month month;
+
+  private Integer week;
 }

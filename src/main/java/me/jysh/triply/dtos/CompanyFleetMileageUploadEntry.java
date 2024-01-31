@@ -10,14 +10,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonPropertyOrder({"employeeID", "distanceTravelled", "energyConsumed", "fuelConsumed"})
+@JsonPropertyOrder({"employeeId", "distanceTravelled", "energyConsumed", "fuelConsumed"})
 public class CompanyFleetMileageUploadEntry {
 
-    private String employeeID;
+  private String employeeId;
 
-    private Double distanceTravelled;
+  private Double distanceTravelled;
 
-    private Double energyConsumed;
+  private Double energyConsumed;
 
-    private Double fuelConsumed;
+  private Double fuelConsumed;
 }

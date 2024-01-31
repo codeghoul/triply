@@ -16,19 +16,20 @@ import me.jysh.triply.dtos.enums.FuelType;
 @Data
 @Entity
 @Table(name = "vehicle_model", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_vehicle_model", columnNames = {"model"})
+    @UniqueConstraint(name = "uk_vehicle_model", columnNames = {"model"})
 })
 @EqualsAndHashCode(callSuper = true)
 public class VehicleModelEntity extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private FuelType fuelType;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
 
-    private String make;
+  @Enumerated(EnumType.STRING)
+  private FuelType fuelType;
 
-    private String name;
+  private String make;
+
+  private String name;
 }

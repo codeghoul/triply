@@ -5,13 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.time.Instant;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.time.Instant;
 
 @Data
 @Entity
@@ -19,16 +16,16 @@ import java.time.Instant;
 @EqualsAndHashCode(callSuper = true)
 public class RefreshTokenEntity extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
 
-    private Long employeeId;
+  private Long employeeId;
 
-    @Column(nullable = false, unique = true)
-    private String token;
+  @Column(nullable = false, unique = true)
+  private String token;
 
-    @Column(nullable = false)
-    private Instant expiryDate;
+  @Column(nullable = false)
+  private Instant expiryDate;
 }

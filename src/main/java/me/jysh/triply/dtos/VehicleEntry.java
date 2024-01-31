@@ -11,11 +11,11 @@ import lombok.Setter;
 @AllArgsConstructor
 public class VehicleEntry {
 
-    private Long id;
+  private Long id;
 
-    private String registrationNumber;
+  private String registrationNumber;
 
-    private VehicleModelEntry vehicleModel;
+  private VehicleModelEntry vehicleModel;
 
-    private Long employeeId;
+  private Long employeeId;
 }

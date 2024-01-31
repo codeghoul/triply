@@ -16,18 +16,19 @@ import lombok.EqualsAndHashCode;
 @Table(name = "vehicle")
 @EqualsAndHashCode(callSuper = true)
 public class VehicleEntity extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
 
-    private String registrationNumber;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "vehicle_model_id")
-    private VehicleModelEntity vehicleModel;
+  private String registrationNumber;
 
-    @OneToOne
-    @JoinColumn(name = "employee_id")
-    private EmployeeEntity employee;
+  @OneToOne
+  @JoinColumn(name = "vehicle_model_id")
+  private VehicleModelEntity vehicleModel;
+
+  @OneToOne
+  @JoinColumn(name = "employee_id")
+  private EmployeeEntity employee;
 }

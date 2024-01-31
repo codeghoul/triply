@@ -1,11 +1,10 @@
 package me.jysh.triply.dtos;
 
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.Instant;
 
 @Getter
 @Setter
@@ -13,11 +12,11 @@ import java.time.Instant;
 @AllArgsConstructor
 public class RefreshTokenEntry {
 
-    private long id;
+  private long id;
 
-    private Long employeeId;
+  private Long employeeId;
 
-    private String token;
+  private String token;
 
-    private Instant expiryDate;
+  private Instant expiryDate;
 }

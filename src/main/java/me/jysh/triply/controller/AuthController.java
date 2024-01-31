@@ -24,29 +24,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class AuthController {
 
-    private final AuthFacade facade;
+  private final AuthFacade facade;
 
-    @Operation(summary = "Login to the system", description = "Authenticate user and generate an access token.")
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(
-            @RequestBody LoginRequest request
-    ) {
-        final LoginResponse loginResponse = facade.login(request.username(), request.password());
-        return ResponseEntity.ok().body(loginResponse);
-    }
+  @Operation(summary = "Login to the system", description = "Authenticate user and generate an access token.")
+  @PostMapping("/login")
+  public ResponseEntity<LoginResponse> login(
+      @RequestBody LoginRequest request
+  ) {
+    final LoginResponse loginResponse = facade.login(request.username(), request.password());
+    return ResponseEntity.ok().body(loginResponse);
+  }
 
-    @Operation(summary = "Refresh access token", description = "Refresh the access token using a valid refresh token.")
-    @ApiResponse(
-            responseCode = "202",
-            description = "Token refreshed successfully",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = RefreshResponse.class))
-    )
-    @PostMapping("/refresh")
-    public ResponseEntity<RefreshResponse> refreshToken(
-            @Parameter(description = "Tokens for refreshing", required = true)
-            @RequestBody RefreshRequest request
-    ) {
-        final RefreshResponse refresh = facade.refresh(request.tokens());
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(refresh);
-    }
+  @Operation(summary = "Refresh access token", description = "Refresh the access token using a valid refresh token.")
+  @ApiResponse(
+      responseCode = "202",
+      description = "Token refreshed successfully",
+      content = @Content(mediaType = "application/json", schema = @Schema(implementation = RefreshResponse.class))
+  )
+  @PostMapping("/refresh")
+  public ResponseEntity<RefreshResponse> refreshToken(
+      @Parameter(description = "Tokens for refreshing", required = true)
+      @RequestBody RefreshRequest request
+  ) {
+    final RefreshResponse refresh = facade.refresh(request.tokens());
+    return ResponseEntity.status(HttpStatus.ACCEPTED).body(refresh);
+  }
 }

@@ -14,15 +14,16 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class CompanyService {
 
-    private final CompanyRepository companyRepository;
+  private final CompanyRepository companyRepository;
 
-    public CompanyEntry findById(final Long companyId) {
-        return companyRepository.findById(companyId).map(CompanyMapper::toEntry)
-                .orElseThrow(() -> new NotFoundException(String.format("company with id :: %d not found", companyId)));
-    }
+  public CompanyEntry findById(final Long companyId) {
+    return companyRepository.findById(companyId).map(CompanyMapper::toEntry)
+        .orElseThrow(() -> new NotFoundException(
+            String.format("company with id :: %d not found", companyId)));
+  }
 
-    @Transactional
-    public CompanyEntry save(final CompanyEntity company) {
-        return CompanyMapper.toEntry(companyRepository.save(company));
-    }
+  @Transactional
+  public CompanyEntry save(final CompanyEntity company) {
+    return CompanyMapper.toEntry(companyRepository.save(company));
+  }
 }
