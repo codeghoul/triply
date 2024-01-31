@@ -22,6 +22,7 @@ public class AuthFacade {
 
   private final TokenService tokenService;
 
+  @Transactional
   public LoginResponse login(final String employeeId, final String password) {
     try {
       final EmployeeEntry employeeEntry = employeeService.findByEmployeeIdAndPassword(employeeId,

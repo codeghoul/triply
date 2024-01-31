@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Data Transfer Object (DTO) representing a mileage upload row for a company fleet.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,11 +16,23 @@ import lombok.Setter;
 @JsonPropertyOrder({"employeeId", "distanceTravelled", "energyConsumed", "fuelConsumed"})
 public class CompanyFleetMileageUploadEntry {
 
+  /**
+   * The unique identifier of the employee associated with the mileage entry.
+   */
   private String employeeId;
 
+  /**
+   * The distance traveled by the vehicle (in kilometers).
+   */
   private Double distanceTravelled;
 
+  /**
+   * The energy consumed by the vehicle during the journey (in kilowatt-hours).
+   */
   private Double energyConsumed;
 
+  /**
+   * The fuel consumed by the vehicle during the journey (in liters).
+   */
   private Double fuelConsumed;
 }

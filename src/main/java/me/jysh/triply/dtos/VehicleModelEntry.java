@@ -6,7 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import me.jysh.triply.dtos.enums.FuelType;
+import me.jysh.triply.entity.VehicleModelEntity;
 
+/**
+ * Data Transfer Object (DTO) representing a vehicle model entry corresponding to a
+ * {@link VehicleModelEntity}.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,13 +19,28 @@ import me.jysh.triply.dtos.enums.FuelType;
 @JsonPropertyOrder({"make", "name", "fuelType", "fuelEmissionFactor"})
 public class VehicleModelEntry {
 
+  /**
+   * The unique identifier of the vehicle model.
+   */
   private Long id;
 
+  /**
+   * The make (brand or manufacturer) of the vehicle model.
+   */
   private String make;
 
+  /**
+   * The name of the vehicle model.
+   */
   private String name;
 
+  /**
+   * The type of fuel used by the vehicle model.
+   */
   private FuelType fuelType;
 
+  /**
+   * The emission factor associated with the fuel used by the vehicle model.
+   */
   private Double fuelEmissionFactor;
 }

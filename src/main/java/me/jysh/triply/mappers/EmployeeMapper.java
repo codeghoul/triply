@@ -13,7 +13,7 @@ public final class EmployeeMapper {
     final EmployeeEntry employeeEntry = new EmployeeEntry();
     employeeEntry.setId(entity.getId());
     employeeEntry.setCompanyId(entity.getCompanyId());
-    employeeEntry.setUsername(entity.getUsername());
+    employeeEntry.setEmployeeId(entity.getUsername());
     employeeEntry.setRoles(entity.getRoles().stream().map(RoleEntity::getName).toList());
     return employeeEntry;
   }

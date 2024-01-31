@@ -13,23 +13,40 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import me.jysh.triply.dtos.enums.FuelType;
 
-@Data
+/**
+ * Represents a vehicle model entity in the system.
+ */
 @Entity
 @Table(name = "vehicle_model", uniqueConstraints = {
     @UniqueConstraint(name = "uk_vehicle_model", columnNames = {"model"})
 })
 @EqualsAndHashCode(callSuper = true)
+@Data
 public class VehicleModelEntity extends BaseEntity {
 
+  /**
+   * The unique identifier for the vehicle model.
+   */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Long id;
 
+  /**
+   * The fuel type of the vehicle model.
+   */
   @Enumerated(EnumType.STRING)
   private FuelType fuelType;
 
+  /**
+   * The make (brand) of the vehicle model.
+   */
+  @Column(name = "make")
   private String make;
 
+  /**
+   * The name of the vehicle model.
+   */
+  @Column(name = "name")
   private String name;
 }

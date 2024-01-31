@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.jysh.triply.dtos.request.LoginRequest;
 import me.jysh.triply.dtos.request.RefreshRequest;
 import me.jysh.triply.dtos.response.LoginResponse;
@@ -22,16 +23,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
+@Slf4j
 public class AuthController {
 
   private final AuthFacade facade;
 
   @Operation(summary = "Login to the system", description = "Authenticate user and generate an access token.")
   @PostMapping("/login")
-  public ResponseEntity<LoginResponse> login(
-      @RequestBody LoginRequest request
-  ) {
+  public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+    log.info("Received login request for user: {}", request.username());
+
     final LoginResponse loginResponse = facade.login(request.username(), request.password());
+
+    log.info("User {} authenticated successfully", request.username());
     return ResponseEntity.ok().body(loginResponse);
   }
 
@@ -44,9 +48,12 @@ public class AuthController {
   @PostMapping("/refresh")
   public ResponseEntity<RefreshResponse> refreshToken(
       @Parameter(description = "Tokens for refreshing", required = true)
-      @RequestBody RefreshRequest request
-  ) {
+      @RequestBody RefreshRequest request) {
+    log.info("Received refresh request for tokens: {}", request.tokens());
+
     final RefreshResponse refresh = facade.refresh(request.tokens());
+
+    log.info("Access token refreshed successfully");
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(refresh);
   }
 }

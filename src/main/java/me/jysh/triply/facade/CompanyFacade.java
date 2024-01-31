@@ -72,7 +72,8 @@ public class CompanyFacade {
     return employeeEntity;
   }
 
-  private CompanyEntry createCompany(final CompanyEntry company) {
+  @Transactional
+  public CompanyEntry createCompany(final CompanyEntry company) {
     final CompanyEntity companyEntity = CompanyMapper.toEntity(company);
     return companyService.save(companyEntity);
   }

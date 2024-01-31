@@ -4,6 +4,10 @@ import java.io.Serial;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * Custom exception class representing a login failure. This exception is thrown when a login
+ * attempt fails due to incorrect credentials.
+ */
 @ResponseStatus(HttpStatus.UNAUTHORIZED)
 public class LoginException extends RuntimeException {
 

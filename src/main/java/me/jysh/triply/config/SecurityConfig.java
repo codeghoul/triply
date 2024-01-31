@@ -7,12 +7,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * Configuration class for setting up security-related configurations in the application.
+ */
 @Configuration
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class SecurityConfig implements WebMvcConfigurer {
 
-  final AuthenticationInterceptor authNInterceptor;
+  private final AuthenticationInterceptor authNInterceptor;
 
+  /**
+   * Adds the {@link AuthenticationInterceptor} to the Spring MVC interceptors with some specific
+   * exclusions.
+   *
+   * @param registry The registry containing the interceptors.
+   */
   @Override
   public void addInterceptors(final InterceptorRegistry registry) {
     registry.addInterceptor(authNInterceptor)

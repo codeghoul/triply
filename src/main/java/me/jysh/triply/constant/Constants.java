@@ -4,6 +4,9 @@ import java.util.Set;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Common constants for the project.
+ */
 @NoArgsConstructor(onConstructor_ = {@Autowired})
 public final class Constants {
 

@@ -4,6 +4,9 @@ import java.io.Serial;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * Custom exception class representing a refresh token exception.
+ */
 @ResponseStatus(HttpStatus.UNAUTHORIZED)
 public class TokenRefreshException extends RuntimeException {
 

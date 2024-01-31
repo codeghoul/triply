@@ -26,7 +26,7 @@ public final class Seeder implements CommandLineRunner {
   @Override
   public void run(String... args) {
 
-    final List<RoleEntity> roles = Stream.of("ROLE_SUPER_ADMIN", "ROLE_ADMIN", "ROLE_EMPLOYEE")
+    final List<RoleEntity> roles = Stream.of("ROLE_SUPER_ADMIN")
         .map(this::getOrCreateRole).toList();
 
     final CompanyEntity companyEntity = getOrCreateCompany("Triply");

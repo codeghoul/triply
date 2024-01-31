@@ -55,7 +55,7 @@ public class TokenService {
     final Instant accessTokenValidity = now.plusMillis(accessTokenExpiryInMs);
 
     return Jwts.builder()
-        .subject(employee.getUsername())
+        .subject(employee.getEmployeeId())
         .claim(EMPLOYEE_ID_CLAIM_KEY, employee.getId())
         .claim(COMPANY_ID_CLAIM_KEY, employee.getCompanyId())
         .claim(ROLES_CLAIM_KEY, employee.getRoles())
