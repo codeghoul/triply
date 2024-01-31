@@ -42,7 +42,7 @@ public class CompanyFacade {
     }
 
     @Transactional
-    private List<EmployeeEntry> uploadEmployees(final Long companyId, final MultipartFile file) {
+    public List<EmployeeEntry> uploadEmployees(final Long companyId, final MultipartFile file) {
         try {
             final CompanyEntry companyEntry = companyService.findById(companyId);
 
@@ -64,7 +64,7 @@ public class CompanyFacade {
     }
 
     @Transactional
-    private List<MileageEntry> uploadEmission(final Long companyId, final Year year, final Month month, final Integer week, final MultipartFile file) {
+    public List<MileageEntry> uploadEmission(final Long companyId, final Year year, final Month month, final Integer week, final MultipartFile file) {
         try {
             final CompanyEntry companyEntry = companyService.findById(companyId);
 
