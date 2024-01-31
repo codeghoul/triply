@@ -38,7 +38,7 @@ public class MileageEntity extends BaseEntity {
    * The distance traveled by the vehicle.
    */
   @Column(name = "distance_travelled")
-  private Double distanceTravelled;
+  private Double distanceTravelledInKm;
 
   /**
    * The energy consumed by the vehicle.

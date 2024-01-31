@@ -19,10 +19,8 @@ public class VehicleModelService {
 
   private final VehicleModelRepository repository;
 
-  public List<VehicleModelEntry> saveAll(final List<VehicleModelEntry> vehicleModels) {
-    final List<VehicleModelEntity> toSave = vehicleModels.stream().map(VehicleModelMapper::toEntity)
-        .toList();
-    final List<VehicleModelEntity> savedEntities = repository.saveAll(toSave);
+  public List<VehicleModelEntry> saveAll(final List<VehicleModelEntity> vehicleModels) {
+    final List<VehicleModelEntity> savedEntities = repository.saveAll(vehicleModels);
     return savedEntities.stream().map(VehicleModelMapper::toEntry).toList();
   }
 

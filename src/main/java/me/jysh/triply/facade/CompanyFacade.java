@@ -131,7 +131,7 @@ public class CompanyFacade {
    * @return A list of MileageEntry objects created from the CSV file.
    */
   @Transactional
-  public List<MileageEntry> uploadEmission(final Long companyId, final Year year, final Month month,
+  public List<MileageEntry> uploadMileages(final Long companyId, final Year year, final Month month,
       final Integer week, final MultipartFile file) {
     try {
       final CompanyEntry companyEntry = companyService.findById(companyId);
@@ -166,7 +166,7 @@ public class CompanyFacade {
         mileageEntity.setWeek(week);
         mileageEntity.setEnergyConsumed(entry.getEnergyConsumed());
         mileageEntity.setFuelConsumed(entry.getFuelConsumed());
-        mileageEntity.setDistanceTravelled(entry.getDistanceTravelled());
+        mileageEntity.setDistanceTravelledInKm(entry.getDistanceTravelledInKm());
         toStore.add(mileageEntity);
       }
 

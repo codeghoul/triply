@@ -3,7 +3,7 @@ package me.jysh.triply.seeder;
 import java.util.List;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import me.jysh.triply.entity.CompanyEntity;
 import me.jysh.triply.entity.EmployeeEntity;
 import me.jysh.triply.entity.RoleEntity;
@@ -16,11 +16,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-@Log4j2
+@Slf4j
 public final class Seeder implements CommandLineRunner {
 
   private final CompanyRepository companyRepository;
+
   private final EmployeeRepository employeeRepository;
+
   private final RoleRepository roleRepository;
 
   @Override

@@ -27,15 +27,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class for managing authentication tokens.
+ */
 @Service
 @Log4j2
 public class TokenService {
 
   private final RefreshTokenRepository refreshTokenRepository;
+
   @Value("${jwt.access.secret-key}")
   private String jwtAccessSecretKey;
+
   @Value("${jwt.access.token-expiry-ms}")
   private Long accessTokenExpiryInMs;
+
   @Value("${jwt.refresh.token-expiry-ms}")
   private Long refreshTokenExpiryInMs;
 
@@ -44,6 +50,12 @@ public class TokenService {
     this.refreshTokenRepository = repository;
   }
 
+  /**
+   * Creates both access and refresh tokens for the given employee.
+   *
+   * @param employee The employee for whom tokens are generated.
+   * @return A TokenEntry containing the generated access and refresh tokens.
+   */
   public TokenEntry createTokens(final EmployeeEntry employee) {
     final String refreshToken = createRefreshToken(employee);
     final String accessToken = createAccessToken(employee);
@@ -76,6 +88,12 @@ public class TokenService {
     return refreshToken.getToken();
   }
 
+  /**
+   * Validates the given access token.
+   *
+   * @param accessToken The access token to be validated.
+   * @return True if the access token is valid; otherwise, false.
+   */
   public boolean validateAccessToken(final String accessToken) {
     try {
       getJwtParser().parse(accessToken);
@@ -95,6 +113,12 @@ public class TokenService {
     }
   }
 
+  /**
+   * Retrieves the claims from the given access token.
+   *
+   * @param accessToken The access token from which claims are to be extracted.
+   * @return The claims extracted from the access token.
+   */
   public Claims getClaims(final String accessToken) {
     final JwtParser parser = getJwtParser();
     return parser.parseSignedClaims(accessToken).getPayload();
@@ -104,7 +128,13 @@ public class TokenService {
     return Jwts.parser().setSigningKey(jwtAccessSecretKey).build();
   }
 
-
+  /**
+   * Validates the given refresh token and returns a RefreshTokenEntry if valid.
+   *
+   * @param refreshToken The refresh token to be validated.
+   * @return A RefreshTokenEntry representing the validated refresh token.
+   * @throws TokenRefreshException If the refresh token is invalid or expired.
+   */
   public RefreshTokenEntry validateRefreshToken(final String refreshToken) {
     final Optional<RefreshTokenEntity> optionalRefreshToken = refreshTokenRepository.findByToken(
         refreshToken);
@@ -124,6 +154,12 @@ public class TokenService {
     return RefreshTokenMapper.toEntry(token);
   }
 
+  /**
+   * Deletes the specified refresh token from the repository.
+   *
+   * @param refreshToken The refresh token to be deleted.
+   * @return True if the refresh token is deleted; otherwise, false.
+   */
   public boolean deleteRefreshToken(final String refreshToken) {
     return refreshTokenRepository.deleteByToken(refreshToken) == 1;
   }

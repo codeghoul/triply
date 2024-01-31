@@ -24,7 +24,7 @@ public class CompanyFleetMileageUploadEntry {
   /**
    * The distance traveled by the vehicle (in kilometers).
    */
-  private Double distanceTravelled;
+  private Double distanceTravelledInKm;
 
   /**
    * The energy consumed by the vehicle during the journey (in kilowatt-hours).

@@ -16,7 +16,7 @@ import me.jysh.triply.entity.VehicleModelEntity;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonPropertyOrder({"make", "name", "fuelType", "fuelEmissionFactor"})
+@JsonPropertyOrder({"make", "name", "fuelType", "emissionPerKm"})
 public class VehicleModelEntry {
 
   /**
@@ -40,7 +40,7 @@ public class VehicleModelEntry {
   private FuelType fuelType;
 
   /**
-   * The emission factor associated with the fuel used by the vehicle model.
+   * The emission per km for this vehicle type in grams.
    */
-  private Double fuelEmissionFactor;
+  private Double emissionPerKm;
 }

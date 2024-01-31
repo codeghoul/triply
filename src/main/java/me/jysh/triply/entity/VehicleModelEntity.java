@@ -18,7 +18,7 @@ import me.jysh.triply.dtos.enums.FuelType;
  */
 @Entity
 @Table(name = "vehicle_model", uniqueConstraints = {
-    @UniqueConstraint(name = "uk_vehicle_model", columnNames = {"model"})
+    @UniqueConstraint(name = "uk_vehicle_name", columnNames = {"name"})
 })
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -36,6 +36,7 @@ public class VehicleModelEntity extends BaseEntity {
    * The fuel type of the vehicle model.
    */
   @Enumerated(EnumType.STRING)
+  @Column(name = "fuelType", length = 20)
   private FuelType fuelType;
 
   /**
@@ -49,4 +50,9 @@ public class VehicleModelEntity extends BaseEntity {
    */
   @Column(name = "name")
   private String name;
+
+  /**
+   * The emission per km for this vehicle type in grams.
+   */
+  private Double emissionPerKm;
 }

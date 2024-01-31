@@ -75,18 +75,18 @@ public class CompanyController {
   }
 
   @Operation(
-      summary = "Upload emissions for a company",
-      description = "Upload a CSV file containing emissions data."
+      summary = "Upload vehicle mileages for a company",
+      description = "Upload a CSV file containing vehicle mileages data."
   )
   @ApiResponse(
       responseCode = "201",
-      description = "Emissions uploaded successfully",
+      description = "Mileages uploaded successfully",
       content = @Content(mediaType = "application/json")
   )
   @PostMapping(value = "/{companyId}/employees/mileage:upload", consumes = "multipart/form-data")
-  private ResponseEntity<List<MileageEntry>> uploadEmissions(
+  private ResponseEntity<List<MileageEntry>> uploadMileages(
       @PathVariable("companyId") final Long companyId,
-      @Parameter(description = "Emissions data CSV file", required = true, content = @Content(mediaType = "multipart/form-data"))
+      @Parameter(description = "Mileages data CSV file", required = true, content = @Content(mediaType = "multipart/form-data"))
       @RequestParam("file") final MultipartFile file,
       @Parameter(required = true)
       @RequestParam("year") final Year year,
@@ -95,9 +95,9 @@ public class CompanyController {
       @Parameter(required = true)
       @RequestParam("week") final Integer week
   ) {
-    log.info("Received emissions upload request for company ID: {}", companyId);
+    log.info("Received vehicle mileages upload request for company ID: {}", companyId);
 
-    final List<MileageEntry> mileages = companyFacade.uploadEmission(companyId, year, month, week,
+    final List<MileageEntry> mileages = companyFacade.uploadMileages(companyId, year, month, week,
         file);
 
     log.info("Emissions data uploaded successfully for company ID: {}", companyId);

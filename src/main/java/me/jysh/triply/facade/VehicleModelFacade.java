@@ -1,10 +1,16 @@
 package me.jysh.triply.facade;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jysh.triply.dtos.VehicleModelEntry;
+import me.jysh.triply.entity.VehicleModelEntity;
+import me.jysh.triply.mappers.VehicleModelMapper;
 import me.jysh.triply.service.VehicleModelService;
 import me.jysh.triply.utils.CsvUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +29,35 @@ public class VehicleModelFacade {
    * Uploads a list of vehicle models from a CSV file.
    *
    * @param uploadedFile The CSV file containing vehicle model data.
-   * @return A list of VehicleModelEntry objects created from the CSV file.
+   * @return A list of VehicleModelEntry objects created / updated from the CSV file.
    */
   @Transactional
-  private List<VehicleModelEntry> upload(final MultipartFile uploadedFile) {
+  public List<VehicleModelEntry> upload(final MultipartFile uploadedFile) {
     try {
       final List<VehicleModelEntry> vehicleModelEntries = CsvUtils.multipartFileToEntry(
           uploadedFile, VehicleModelEntry.class);
-      List<VehicleModelEntry> savedModels = vehicleModelService.saveAll(vehicleModelEntries);
+
+      final Set<String> vehicleModels = vehicleModelEntries.stream().map(VehicleModelEntry::getName)
+          .collect(Collectors.toSet());
+
+      final Map<String, VehicleModelEntity> existingVehicleModelsMap = vehicleModelService.getVehicleModelEntityMap(
+          vehicleModels);
+
+      final List<VehicleModelEntity> toUpsert = new ArrayList<>();
+
+      for (VehicleModelEntry entry : vehicleModelEntries) {
+        final VehicleModelEntity vehicleModelEntity = existingVehicleModelsMap.getOrDefault(
+            entry.getName(),
+            VehicleModelMapper.toEntity(entry));
+
+        vehicleModelEntity.setEmissionPerKm(entry.getEmissionPerKm());
+        vehicleModelEntity.setMake(entry.getMake());
+        vehicleModelEntity.setFuelType(entry.getFuelType());
+
+        toUpsert.add(vehicleModelEntity);
+      }
+
+      List<VehicleModelEntry> savedModels = vehicleModelService.saveAll(toUpsert);
       log.info("Uploaded {} vehicle models", savedModels.size());
       return savedModels;
     } catch (IOException e) {

@@ -13,5 +13,6 @@ public enum FuelType {
   ETHANOL,
   NATURAL_GAS,
   ELECTRIC,
-  HYBRID
+  HYBRID,
+  HYDROGEN
 }

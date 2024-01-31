@@ -14,7 +14,7 @@ public final class MileageMapper {
     mileageEntry.setYear(entity.getYear());
     mileageEntry.setMonth(entity.getMonth());
     mileageEntry.setWeek(entity.getWeek());
-    mileageEntry.setDistanceTravelled(entity.getDistanceTravelled());
+    mileageEntry.setDistanceTravelled(entity.getDistanceTravelledInKm());
     mileageEntry.setEnergyConsumed(entity.getEnergyConsumed());
     mileageEntry.setFuelConsumed(entity.getFuelConsumed());
     return mileageEntry;

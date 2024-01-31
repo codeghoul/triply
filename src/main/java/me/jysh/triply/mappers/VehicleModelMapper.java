@@ -14,6 +14,7 @@ public final class VehicleModelMapper {
     entity.setName(entry.getName());
     entity.setMake(entry.getMake());
     entity.setFuelType(entry.getFuelType());
+    entity.setEmissionPerKm(entry.getEmissionPerKm());
     return entity;
   }
 
@@ -23,6 +24,7 @@ public final class VehicleModelMapper {
     entry.setName(entity.getName());
     entry.setMake(entity.getMake());
     entry.setFuelType(entity.getFuelType());
+    entry.setEmissionPerKm(entity.getEmissionPerKm());
     return entry;
   }
 }
