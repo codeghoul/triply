@@ -88,7 +88,7 @@ public class CompanyController {
       content = @Content(mediaType = "application/json")
   )
   @PostMapping(value = "/{companyId}/employees/mileage:upload", consumes = "multipart/form-data")
-  @PreAuthorize(withRoles = {Constants.ROLE_COMPANY_ADMIN})
+  @PreAuthorize(withRoles = {Constants.ROLE_SUPER_ADMIN, Constants.ROLE_COMPANY_ADMIN})
   private ResponseEntity<List<MileageEntry>> uploadMileages(
       @PathVariable("companyId") final Long companyId,
       @Parameter(description = "Mileages data CSV file", required = true, content = @Content(mediaType = "multipart/form-data"))

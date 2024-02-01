@@ -5,10 +5,12 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.jysh.triply.config.SecurityContext;
 import me.jysh.triply.constant.Constants;
 import me.jysh.triply.dtos.CompanyEntry;
 import me.jysh.triply.dtos.CompanyFleetMileageUploadEntry;
@@ -22,6 +24,7 @@ import me.jysh.triply.entity.RoleEntity;
 import me.jysh.triply.entity.VehicleEntity;
 import me.jysh.triply.entity.VehicleModelEntity;
 import me.jysh.triply.exception.NotFoundException;
+import me.jysh.triply.exception.UnauthorizedException;
 import me.jysh.triply.mappers.CompanyMapper;
 import me.jysh.triply.service.CompanyService;
 import me.jysh.triply.service.EmployeeService;
@@ -132,6 +135,8 @@ public class CompanyFacade {
   @Transactional
   public List<MileageEntry> uploadMileages(final Long companyId, final Year year, final Month month,
       final Integer week, final MultipartFile file) {
+    validateUploadAccess(companyId);
+
     try {
       final CompanyEntry companyEntry = companyService.findById(companyId);
 
@@ -178,6 +183,13 @@ public class CompanyFacade {
           e.getMessage());
       throw new RuntimeException(e);
     }
+  }
+
+  private void validateUploadAccess(final Long companyId) {
+    if (Objects.equals(SecurityContext.getLoggedInEmployeeCompanyId(), companyId)) {
+      return;
+    }
+    throw new UnauthorizedException("User does not belong to this company");
   }
 
   private Map<String, VehicleModelEntity> getVehicleModels(
