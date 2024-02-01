@@ -17,6 +17,8 @@ public final class MileageMapper {
     mileageEntry.setDistanceTravelled(entity.getDistanceTravelledInKm());
     mileageEntry.setEnergyConsumed(entity.getEnergyConsumed());
     mileageEntry.setFuelConsumed(entity.getFuelConsumed());
+    mileageEntry.setTotalEmission(entity.getTotalEmission());
+    mileageEntry.setVehicleId(entity.getVehicleId());
     return mileageEntry;
   }
 }

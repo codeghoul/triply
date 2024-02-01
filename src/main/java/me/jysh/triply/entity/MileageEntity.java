@@ -1,7 +1,10 @@
 package me.jysh.triply.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,6 +13,7 @@ import java.time.Month;
 import java.time.Year;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import me.jysh.triply.utils.YearAttributeConverter;
 
 /**
  * Represents a mileage entity in the system.
@@ -56,12 +60,14 @@ public class MileageEntity extends BaseEntity {
    * The year for which the mileage is recorded.
    */
   @Column(name = "year")
+  @Convert(converter = YearAttributeConverter.class)
   private Year year;
 
   /**
    * The month for which the mileage is recorded.
    */
   @Column(name = "month")
+  @Enumerated(EnumType.STRING)
   private Month month;
 
   /**
@@ -69,4 +75,10 @@ public class MileageEntity extends BaseEntity {
    */
   @Column(name = "week")
   private Integer week;
+
+  /**
+   * Total emission in grams.
+   */
+  @Column(name = "total_emission")
+  private Double totalEmission;
 }

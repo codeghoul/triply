@@ -54,5 +54,6 @@ public class VehicleModelEntity extends BaseEntity {
   /**
    * The emission per km for this vehicle type in grams.
    */
+  @Column(name = "emission_per_km")
   private Double emissionPerKm;
 }

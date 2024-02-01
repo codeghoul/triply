@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.jysh.triply.constant.Constants;
 import me.jysh.triply.entity.CompanyEntity;
 import me.jysh.triply.entity.EmployeeEntity;
 import me.jysh.triply.entity.RoleEntity;
@@ -28,7 +29,7 @@ public final class Seeder implements CommandLineRunner {
   @Override
   public void run(String... args) {
 
-    final List<RoleEntity> roles = Stream.of("ROLE_SUPER_ADMIN")
+    final List<RoleEntity> roles = Stream.of("ROLE_SUPER_ADMIN", Constants.COMPANY_ADMIN_ROLE, Constants.COMPANY_EMPLOYEE_ROLE)
         .map(this::getOrCreateRole).toList();
 
     final CompanyEntity companyEntity = getOrCreateCompany("Triply");

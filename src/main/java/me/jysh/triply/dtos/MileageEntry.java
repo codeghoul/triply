@@ -57,4 +57,9 @@ public class MileageEntry {
    * The week in which the mileage entry occurred.
    */
   private int week;
+
+  /**
+   * The total emission in grams.
+   */
+  private Double totalEmission;
 }

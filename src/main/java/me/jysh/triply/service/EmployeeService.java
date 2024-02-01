@@ -23,7 +23,8 @@ public class EmployeeService {
 
   @Transactional
   public List<EmployeeEntry> saveAll(final List<EmployeeEntity> employees) {
-    return repository.saveAll(employees).stream().map(EmployeeMapper::toEntry).toList();
+    final List<EmployeeEntity> savedEmployees = repository.saveAll(employees);
+    return savedEmployees.stream().map(EmployeeMapper::toEntry).toList();
   }
 
   public EmployeeEntry findByEmployeeIdAndPassword(final String username, final String password) {

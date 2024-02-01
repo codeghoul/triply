@@ -1,6 +1,5 @@
 package me.jysh.triply.facade;
 
-import java.io.IOException;
 import java.time.Month;
 import java.time.Year;
 import java.util.ArrayList;
@@ -113,7 +112,7 @@ public class CompanyFacade {
       }
 
       return employeeService.saveAll(employeeEntities);
-    } catch (IOException e) {
+    } catch (Exception e) {
       log.error("Error occurred during employee upload for company with ID {}: {}", companyId,
           e.getMessage());
       throw new RuntimeException(e);
@@ -167,11 +166,14 @@ public class CompanyFacade {
         mileageEntity.setEnergyConsumed(entry.getEnergyConsumed());
         mileageEntity.setFuelConsumed(entry.getFuelConsumed());
         mileageEntity.setDistanceTravelledInKm(entry.getDistanceTravelledInKm());
+        mileageEntity.setTotalEmission(
+            entry.getDistanceTravelledInKm() * vehicle.getVehicleModel().getEmissionPerKm());
+        mileageEntity.setVehicleId(vehicle.getId());
         toStore.add(mileageEntity);
       }
 
       return mileageService.saveAll(toStore);
-    } catch (IOException e) {
+    } catch (Exception e) {
       log.error("Error occurred during mileage upload for company with ID {}: {}", companyId,
           e.getMessage());
       throw new RuntimeException(e);

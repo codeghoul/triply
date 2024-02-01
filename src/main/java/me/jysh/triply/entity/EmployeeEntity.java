@@ -1,5 +1,6 @@
 package me.jysh.triply.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -67,7 +68,6 @@ public class EmployeeEntity extends BaseEntity {
   /**
    * The vehicle associated with the employee.
    */
-  @OneToOne
-  @JoinColumn(name = "vehicle_id")
+  @OneToOne(cascade = CascadeType.ALL, mappedBy = "employee")
   private VehicleEntity vehicle;
 }

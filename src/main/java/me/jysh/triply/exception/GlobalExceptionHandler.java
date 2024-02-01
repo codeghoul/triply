@@ -1,5 +1,6 @@
 package me.jysh.triply.exception;
 
+import me.jysh.triply.dtos.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,8 +19,11 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity with UNAUTHORIZED status and error message.
    */
   @ExceptionHandler(LoginException.class)
-  public ResponseEntity<String> handleLoginException(LoginException ex) {
-    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+  public ResponseEntity<ErrorResponse> handleLoginException(LoginException ex) {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(
+        new ErrorResponse(HttpStatus.UNAUTHORIZED.value(),
+            HttpStatus.UNAUTHORIZED.getReasonPhrase(),
+            ex.getMessage()));
   }
 
   /**
@@ -29,8 +33,10 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity with NOT_FOUND status and error message.
    */
   @ExceptionHandler(NotFoundException.class)
-  public ResponseEntity<String> handleNotFoundException(NotFoundException ex) {
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+  public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+        new ErrorResponse(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(),
+            ex.getMessage()));
   }
 
   /**
@@ -40,8 +46,10 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity with BAD_REQUEST status and error message.
    */
   @ExceptionHandler(TokenRefreshException.class)
-  public ResponseEntity<String> handleTokenRefreshException(TokenRefreshException ex) {
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+  public ResponseEntity<ErrorResponse> handleTokenRefreshException(TokenRefreshException ex) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+        new ErrorResponse(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(),
+            ex.getMessage()));
   }
 
   /**
@@ -52,8 +60,11 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity with UNAUTHORIZED status and error message.
    */
   @ExceptionHandler(UnauthenticatedException.class)
-  public ResponseEntity<String> handleUnauthenticatedException(UnauthenticatedException ex) {
-    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+  public ResponseEntity<ErrorResponse> handleUnauthenticatedException(UnauthenticatedException ex) {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+        new ErrorResponse(HttpStatus.UNAUTHORIZED.value(),
+            HttpStatus.UNAUTHORIZED.getReasonPhrase(),
+            ex.getMessage()));
   }
 
   /**
@@ -64,8 +75,9 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity with INTERNAL_SERVER_ERROR status and error message.
    */
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<String> handleException(Exception ex) {
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .body("Something went wrong.");
+  public ResponseEntity<ErrorResponse> handleException(Exception ex) {
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+        new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), ex.getMessage()));
   }
 }
