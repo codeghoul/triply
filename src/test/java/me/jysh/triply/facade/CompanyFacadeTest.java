@@ -90,7 +90,7 @@ class CompanyFacadeTest {
         .thenReturn(mockEntries);
 
     RoleEntity mockRoleEntity = new RoleEntity();
-    Map<String, RoleEntity> mockRoles = Collections.singletonMap(Constants.COMPANY_EMPLOYEE_ROLE,
+    Map<String, RoleEntity> mockRoles = Collections.singletonMap(Constants.ROLE_COMPANY_EMPLOYEE,
         mockRoleEntity);
     when(roleService.getRoleEntityMap(eq(Constants.COMPANY_ROLES))).thenReturn(mockRoles);
 
