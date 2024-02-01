@@ -1,7 +1,10 @@
 package me.jysh.triply.seeder;
 
+import java.util.List;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
+import me.jysh.triply.constant.Constants;
 import me.jysh.triply.entity.CompanyEntity;
 import me.jysh.triply.entity.EmployeeEntity;
 import me.jysh.triply.entity.RoleEntity;
@@ -12,55 +15,57 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Stream;
-
 @Component
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-@Log4j2
+@Slf4j
 public final class Seeder implements CommandLineRunner {
 
-    private final CompanyRepository companyRepository;
-    private final EmployeeRepository employeeRepository;
-    private final RoleRepository roleRepository;
+  private final CompanyRepository companyRepository;
 
-    @Override
-    public void run(String... args) {
+  private final EmployeeRepository employeeRepository;
 
-        final List<RoleEntity> roles = Stream.of("ROLE_SUPER_ADMIN", "ROLE_ADMIN", "ROLE_EMPLOYEE").map(this::getOrCreateRole).toList();
+  private final RoleRepository roleRepository;
 
-        final CompanyEntity companyEntity = getOrCreateCompany("Triply");
+  @Override
+  public void run(String... args) {
 
-        final EmployeeEntity employeeEntity = getOrCreateEmployee(companyEntity.getId(), "10101", roles);
-    }
+    final List<RoleEntity> roles = Stream.of("ROLE_SUPER_ADMIN", Constants.COMPANY_ADMIN_ROLE, Constants.COMPANY_EMPLOYEE_ROLE)
+        .map(this::getOrCreateRole).toList();
 
-    private EmployeeEntity getOrCreateEmployee(final Long companyId, final String username, final List<RoleEntity> roles) {
-        return employeeRepository.findByCompanyIdAndUsername(companyId, username)
-                .orElseGet(() -> {
-                    EmployeeEntity newEmployee = new EmployeeEntity();
-                    newEmployee.setUsername(username);
-                    newEmployee.setCompanyId(companyId);
-                    newEmployee.setPassword("some password");
-                    newEmployee.setRoles(roles);
-                    return employeeRepository.save(newEmployee);
-                });
-    }
+    final CompanyEntity companyEntity = getOrCreateCompany("Triply");
 
-    private CompanyEntity getOrCreateCompany(final String name) {
-        return companyRepository.findByName(name)
-                .orElseGet(() -> {
-                    CompanyEntity newCompany = new CompanyEntity();
-                    newCompany.setName(name);
-                    return companyRepository.save(newCompany);
-                });
-    }
+    final EmployeeEntity employeeEntity = getOrCreateEmployee(companyEntity.getId(), "10101",
+        roles);
+  }
 
-    private RoleEntity getOrCreateRole(final String name) {
-        return roleRepository.findByName(name)
-                .orElseGet(() -> {
-                    RoleEntity newRole = new RoleEntity();
-                    newRole.setName(name);
-                    return roleRepository.save(newRole);
-                });
-    }
+  private EmployeeEntity getOrCreateEmployee(final Long companyId, final String username,
+      final List<RoleEntity> roles) {
+    return employeeRepository.findByCompanyIdAndUsername(companyId, username)
+        .orElseGet(() -> {
+          EmployeeEntity newEmployee = new EmployeeEntity();
+          newEmployee.setUsername(username);
+          newEmployee.setCompanyId(companyId);
+          newEmployee.setPassword("some password");
+          newEmployee.setRoles(roles);
+          return employeeRepository.save(newEmployee);
+        });
+  }
+
+  private CompanyEntity getOrCreateCompany(final String name) {
+    return companyRepository.findByName(name)
+        .orElseGet(() -> {
+          CompanyEntity newCompany = new CompanyEntity();
+          newCompany.setName(name);
+          return companyRepository.save(newCompany);
+        });
+  }
+
+  private RoleEntity getOrCreateRole(final String name) {
+    return roleRepository.findByName(name)
+        .orElseGet(() -> {
+          RoleEntity newRole = new RoleEntity();
+          newRole.setName(name);
+          return roleRepository.save(newRole);
+        });
+  }
 }

@@ -1,23 +1,39 @@
 package me.jysh.triply.dtos;
 
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import me.jysh.triply.entity.RefreshTokenEntity;
 
-import java.time.Instant;
-
+/**
+ * Data Transfer Object (DTO) representing a refresh token entry corresponding to a
+ * {@link RefreshTokenEntity}.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class RefreshTokenEntry {
 
-    private long id;
+  /**
+   * The unique identifier of the refresh token entry.
+   */
+  private long id;
 
-    private Long employeeId;
+  /**
+   * The unique identifier of the employee associated with the refresh token.
+   */
+  private Long employeeId;
 
-    private String token;
+  /**
+   * The refresh token string.
+   */
+  private String token;
 
-    private Instant expiryDate;
+  /**
+   * The expiration date and time of the refresh token.
+   */
+  private Instant expiryDate;
 }

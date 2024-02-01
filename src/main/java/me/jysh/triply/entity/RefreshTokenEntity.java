@@ -5,30 +5,43 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.time.Instant;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.Instant;
-
+/**
+ * Represents a refresh token entity in the system.
+ */
 @Data
 @Entity
 @Table(name = "refresh_token")
 @EqualsAndHashCode(callSuper = true)
 public class RefreshTokenEntity extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+  /**
+   * The unique identifier for the refresh token.
+   */
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
 
-    private Long employeeId;
+  /**
+   * The identifier of the employee associated with the refresh token.
+   */
+  @Column(name = "employee_id")
+  private Long employeeId;
 
-    @Column(nullable = false, unique = true)
-    private String token;
+  /**
+   * The actual refresh token string.
+   */
+  @Column(name = "token", nullable = false, unique = true)
+  private String token;
 
-    @Column(nullable = false)
-    private Instant expiryDate;
+  /**
+   * The expiry date of the refresh token.
+   */
+  @Column(name = "expiry_date", nullable = false)
+  private Instant expiryDate;
 }
