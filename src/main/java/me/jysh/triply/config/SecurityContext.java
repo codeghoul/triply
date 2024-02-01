@@ -1,5 +1,6 @@
 package me.jysh.triply.config;
 
+import java.util.HashSet;
 import java.util.Set;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import me.jysh.triply.dtos.EmployeeEntry;
 public final class SecurityContext {
 
   private static final ThreadLocal<Long> LOGGED_IN_EMPLOYEE_ID = new ThreadLocal<>();
-  private static final ThreadLocal<String> LOGGED_IN_EMPLOYEE_COMPANY_ID = new ThreadLocal<>();
+  private static final ThreadLocal<Long> LOGGED_IN_EMPLOYEE_COMPANY_ID = new ThreadLocal<>();
   private static final ThreadLocal<Set<String>> LOGGED_IN_EMPLOYEE_ROLES = new ThreadLocal<>();
 
   /**
@@ -22,6 +23,8 @@ public final class SecurityContext {
    */
   public static void setSecurityContext(final EmployeeEntry employee) {
     LOGGED_IN_EMPLOYEE_ID.set(employee.getId());
+    LOGGED_IN_EMPLOYEE_COMPANY_ID.set(employee.getCompanyId());
+    LOGGED_IN_EMPLOYEE_ROLES.set(new HashSet<>(employee.getRoles()));
   }
 
   /**
@@ -38,7 +41,7 @@ public final class SecurityContext {
    *
    * @return The company ID of the logged-in employee.
    */
-  public static String getLoggedInEmployeeCompanyId() {
+  public static Long getLoggedInEmployeeCompanyId() {
     return LOGGED_IN_EMPLOYEE_COMPANY_ID.get();
   }
 

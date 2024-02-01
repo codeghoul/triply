@@ -57,9 +57,9 @@ public class CompanyFacade {
     employeeEntity.setUsername(entry.getEmployeeId());
     employeeEntity.setPassword(entry.getPassword());
     if (entry.getAdmin()) {
-      employeeEntity.setRoles(Set.of(eligibleRoles.get(Constants.COMPANY_ADMIN_ROLE)));
+      employeeEntity.setRoles(Set.of(eligibleRoles.get(Constants.ROLE_COMPANY_ADMIN)));
     } else {
-      employeeEntity.setRoles(Set.of(eligibleRoles.get(Constants.COMPANY_EMPLOYEE_ROLE)));
+      employeeEntity.setRoles(Set.of(eligibleRoles.get(Constants.ROLE_COMPANY_EMPLOYEE)));
     }
 
     final VehicleEntity vehicleEntity = new VehicleEntity();

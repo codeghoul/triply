@@ -9,6 +9,8 @@ import java.time.Year;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.jysh.triply.config.PreAuthorize;
+import me.jysh.triply.constant.Constants;
 import me.jysh.triply.dtos.CompanyEntry;
 import me.jysh.triply.dtos.EmployeeEntry;
 import me.jysh.triply.dtos.MileageEntry;
@@ -42,6 +44,7 @@ public class CompanyController {
       content = @Content(mediaType = "application/json")
   )
   @PostMapping(value = "/{companyId}/employees:upload", consumes = "multipart/form-data")
+  @PreAuthorize(withRoles = {Constants.ROLE_SUPER_ADMIN})
   private ResponseEntity<List<EmployeeEntry>> uploadEmployees(
       @PathVariable("companyId") final Long companyId,
       @Parameter(description = "Employee data CSV file", required = true, content = @Content(mediaType = "multipart/form-data"))
@@ -64,6 +67,7 @@ public class CompanyController {
       content = @Content(mediaType = "application/json")
   )
   @PostMapping(value = "", consumes = "application/json")
+  @PreAuthorize(withRoles = {Constants.ROLE_SUPER_ADMIN})
   private ResponseEntity<CompanyEntry> createCompany(
       @RequestBody final CompanyEntry company) {
     log.info("Received request to create a new company");
@@ -84,6 +88,7 @@ public class CompanyController {
       content = @Content(mediaType = "application/json")
   )
   @PostMapping(value = "/{companyId}/employees/mileage:upload", consumes = "multipart/form-data")
+  @PreAuthorize(withRoles = {Constants.ROLE_COMPANY_ADMIN})
   private ResponseEntity<List<MileageEntry>> uploadMileages(
       @PathVariable("companyId") final Long companyId,
       @Parameter(description = "Mileages data CSV file", required = true, content = @Content(mediaType = "multipart/form-data"))

@@ -68,6 +68,20 @@ public class GlobalExceptionHandler {
   }
 
   /**
+   * Handles UnauthorizedException and returns an FORBIDDEN status with a custom error message.
+   *
+   * @param ex The UnauthorizedException that occurred.
+   * @return ResponseEntity with FORBIDDEN status and error message.
+   */
+  @ExceptionHandler(UnauthorizedException.class)
+  public ResponseEntity<ErrorResponse> handleUnauthenticatedException(UnauthorizedException ex) {
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+        new ErrorResponse(HttpStatus.FORBIDDEN.value(),
+            HttpStatus.FORBIDDEN.getReasonPhrase(),
+            ex.getMessage()));
+  }
+
+  /**
    * Handles generic Exception and returns an INTERNAL_SERVER_ERROR status with a custom error
    * message.
    *

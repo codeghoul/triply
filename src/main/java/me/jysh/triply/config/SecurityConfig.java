@@ -2,6 +2,7 @@ package me.jysh.triply.config;
 
 import lombok.RequiredArgsConstructor;
 import me.jysh.triply.config.interceptors.AuthenticationInterceptor;
+import me.jysh.triply.config.interceptors.AuthorizationInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -16,6 +17,8 @@ public class SecurityConfig implements WebMvcConfigurer {
 
   private final AuthenticationInterceptor authNInterceptor;
 
+  private final AuthorizationInterceptor authZInterceptor;
+
   /**
    * Adds the {@link AuthenticationInterceptor} to the Spring MVC interceptors with some specific
    * exclusions.
@@ -26,5 +29,7 @@ public class SecurityConfig implements WebMvcConfigurer {
   public void addInterceptors(final InterceptorRegistry registry) {
     registry.addInterceptor(authNInterceptor)
         .excludePathPatterns("/auth/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**");
+
+    registry.addInterceptor(authZInterceptor);
   }
 }

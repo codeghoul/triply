@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.jysh.triply.config.PreAuthorize;
+import me.jysh.triply.constant.Constants;
 import me.jysh.triply.dtos.VehicleModelEntry;
 import me.jysh.triply.facade.VehicleModelFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,7 @@ public class VehicleModelController {
       content = @Content(mediaType = "application/json")
   )
   @PostMapping(value = "/vehicle-models:upload", consumes = "multipart/form-data")
+  @PreAuthorize(withRoles = {Constants.ROLE_SUPER_ADMIN})
   private ResponseEntity<List<VehicleModelEntry>> uploadVehicleModels(
       @Parameter(description = "Vehicle models data CSV file", required = true, content = @Content(mediaType = "multipart/form-data"))
       @RequestParam("file") final MultipartFile file
