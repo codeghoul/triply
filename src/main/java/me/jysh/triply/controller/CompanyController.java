@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jysh.triply.config.PreAuthorize;
 import me.jysh.triply.constant.Constants;
+import me.jysh.triply.dtos.CompanyEmissionSummaryEntry;
 import me.jysh.triply.dtos.CompanyEntry;
 import me.jysh.triply.dtos.EmployeeEntry;
 import me.jysh.triply.dtos.MileageEntry;
@@ -18,6 +19,7 @@ import me.jysh.triply.facade.CompanyFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -76,6 +78,32 @@ public class CompanyController {
 
     log.info("Company created successfully with ID: {}", createdCompany.getId());
     return ResponseEntity.status(HttpStatus.CREATED).body(createdCompany);
+  }
+
+  @Operation(
+      summary = "Get emission summary for the company."
+  )
+  @ApiResponse(
+      responseCode = "200",
+      description = "Company emission summary retrieved successfully",
+      content = @Content(mediaType = "application/json")
+  )
+  @GetMapping(value = "/{companyId}/emissions:summary", produces = "application/json")
+  @PreAuthorize(withRoles = {Constants.ROLE_COMPANY_EMPLOYEE, Constants.ROLE_COMPANY_ADMIN})
+  private ResponseEntity<CompanyEmissionSummaryEntry> getCompanyEmissionSummary(
+      @PathVariable("companyId") final Long companyId,
+      @RequestParam(value = "year", required = false) final Year year,
+      @RequestParam(value = "month", required = false) final Month month,
+      @RequestParam(value = "week", required = false) final Integer week
+  ) {
+    log.info("Received request to get company emission summary.");
+
+    final CompanyEmissionSummaryEntry summary = companyFacade.getCompanyEmissionSummary(companyId,
+        year, month,
+        week);
+
+    log.info("Company emission summary retrieved successfully with ID: {}", companyId);
+    return ResponseEntity.status(HttpStatus.OK).body(summary);
   }
 
   @Operation(

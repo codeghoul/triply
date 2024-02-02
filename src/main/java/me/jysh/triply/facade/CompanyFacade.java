@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jysh.triply.config.SecurityContext;
 import me.jysh.triply.constant.Constants;
+import me.jysh.triply.dtos.CompanyEmissionSummaryEntry;
 import me.jysh.triply.dtos.CompanyEntry;
 import me.jysh.triply.dtos.CompanyFleetMileageUploadEntry;
 import me.jysh.triply.dtos.CompanyFleetUploadEntry;
@@ -61,9 +62,8 @@ public class CompanyFacade {
     employeeEntity.setPassword(entry.getPassword());
     if (entry.getAdmin()) {
       employeeEntity.setRoles(Set.of(eligibleRoles.get(Constants.ROLE_COMPANY_ADMIN)));
-    } else {
-      employeeEntity.setRoles(Set.of(eligibleRoles.get(Constants.ROLE_COMPANY_EMPLOYEE)));
     }
+    employeeEntity.setRoles(Set.of(eligibleRoles.get(Constants.ROLE_COMPANY_EMPLOYEE)));
 
     final VehicleEntity vehicleEntity = new VehicleEntity();
     vehicleEntity.setRegistrationNumber(entry.getRegistrationNumber());
@@ -205,5 +205,10 @@ public class CompanyFacade {
           String.format("Some vehicle models are not yet supported :: %s", unsupportedModels));
     }
     return vehicleModelMap;
+  }
+
+  public CompanyEmissionSummaryEntry getCompanyEmissionSummary(final Long companyId,
+      final Year year, final Month month, final Integer week) {
+    return companyService.getCompanyEmissionSummary(companyId, year, month, week);
   }
 }
