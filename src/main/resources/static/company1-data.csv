@@ -1,71 +1,71 @@
 employeeId,password,registrationNumber,vehicleModel,admin
-EMP001,password123,ABC123,Corolla,false
-EMP002,securePass456,XYZ789,Accord,true
-EMP003,fleetPass789,PQR456,Fusion,false
-EMP004,pass1234,LMN789,Malibu,false
-EMP005,adminPass789,JKL321,Altima,true
-EMP006,pass123,OPQ456,3 Series,false
-EMP007,fleetPass789,RST789,C-Class,false
-EMP008,securePass123,UVW321,Sonata,false
-EMP009,admin123,XYZ917,Optima,true
-EMP010,password456,ABC987,Passat,false
-EMP011,pass678,LMN321,Prius,false
-EMP012,secure789,PQR987,Insight,false
-EMP013,adminPass456,JKL789,C-Max Hybrid,true
-EMP014,fleetPass123,OPD789,Volt,false
-EMP015,pass890,RST321,Leaf,false
-EMP016,admin567,UVW987,Model S,true
-EMP017,password789,XYZ321,RAV4 Hybrid,false
-EMP018,pass345,PQR988,UX 250h,false
-EMP019,securePass789,ABC789,Escape Hybrid,false
-EMP020,adminPass123,JKL987,Camry Hybrid,true
-EMP021,pass678,LMN987,Jetta TDI,false
-EMP022,fleetPass123,RST987,A3 TDI,false
-EMP023,securePass123,OPQ189,Cruze Diesel,false
-EMP024,password456,XYZ927,GLC 300e 4MATIC,false
-EMP025,admin789,ABC789,i3,true
-EMP026,pass678,LMN987,F-150 Hybrid,false
-EMP027,fleetPass123,RST987,Silverado Diesel,false
-EMP028,securePass123,OPQ289,Titan XD Diesel,false
-EMP029,password456,XYZ937,Clarity Plug-In Hybrid,true
-EMP030,pass678,LMN987,Mirai,false
-EMP031,admin789,ABC789,Outback,true
-EMP032,password456,XYZ947,Mazda6,false
-EMP033,pass678,LMN987,Soul,false
-EMP034,securePass123,OPQ389,Ioniq Hybrid,false
-EMP035,admin789,ABC789,S60,true
-EMP036,password456,XYZ957,E-Class,false
-EMP037,pass678,LMN987,Q5 TDI,false
-EMP038,securePass123,OPQ489,Mustang Mach-E,false
-EMP039,admin789,ABC789,Highlander Hybrid,true
-EMP040,pass678,LMN987,LS 500h,false
-EMP041,password456,XYZ967,5 Series,false
-EMP042,pass678,LMN987,Wrangler 4xe,false
-EMP043,securePass123,OPQ589,Equinox,false
-EMP044,admin789,ABC789,Terrain,true
-EMP045,password456,XYZ977,Envision,false
-EMP046,pass678,LMN987,Kona Electric,false
-EMP047,securePass123,OPQ689,Model 3,false
-EMP048,admin789,ABC789,Land Cruiser,true
-EMP049,pass678,LMN987,Explorer Hybrid,false
-EMP050,password456,XYZ987,Civic Type R,false
-EMP051,pass678,LMN987,E-Tron,false
-EMP052,securePass123,OPP189,S-Class,false
-EMP053,admin789,ABC789,X5 xDrive45e,true
-EMP054,pass678,LMN987,XC90 Hybrid,false
-EMP055,password456,XYZ997,Trailblazer,false
-EMP056,pass678,LMN987,Kicks,false
-EMP057,securePass123,OPP789,Forester,false
-EMP058,admin789,ABC789,C-HR,true
-EMP059,pass678,LMN987,CX-5,false
-EMP060,password456,XYZ907,CR-V Hybrid,false
-EMP061,pass678,LMN987,Santa Fe,false
-EMP062,securePass123,OPP289,Seltos,false
-EMP063,admin789,ABC789,Tiguan,true
-EMP064,pass678,LMN987,RX 450h,false
-EMP065,password456,XYZ988,7 Series,false
-EMP066,pass678,LMN987,A4 TDI,false
-EMP067,securePass123,OPQ789,A-Class,false
-EMP068,admin789,ABC789,Model Y,true
-EMP069,pass678,LMN987,Bronco Sport,false
-EMP070,password456,XYZ980,Avalon Hybrid,false
+EMP001,password123,ABC123,Corolla,FALSE
+EMP002,securePass456,ABC124,Accord,TRUE
+EMP003,fleetPass789,ABC125,Fusion,FALSE
+EMP004,pass1234,ABC126,Malibu,FALSE
+EMP005,adminPass789,ABC127,Altima,TRUE
+EMP006,pass123,ABC128,3 Series,FALSE
+EMP007,fleetPass789,ABC129,C-Class,FALSE
+EMP008,securePass123,ABC130,Sonata,FALSE
+EMP009,admin123,ABC131,Optima,TRUE
+EMP010,password456,ABC132,Passat,FALSE
+EMP011,pass678,ABC133,Prius,FALSE
+EMP012,secure789,ABC134,Insight,FALSE
+EMP013,adminPass456,ABC135,C-Max Hybrid,TRUE
+EMP014,fleetPass123,ABC136,Volt,FALSE
+EMP015,pass890,ABC137,Leaf,FALSE
+EMP016,admin567,ABC138,Model S,TRUE
+EMP017,password789,ABC139,RAV4 Hybrid,FALSE
+EMP018,pass345,ABC140,UX 250h,FALSE
+EMP019,securePass789,ABC141,Escape Hybrid,FALSE
+EMP020,adminPass123,ABC142,Camry Hybrid,TRUE
+EMP021,pass678,ABC143,Jetta TDI,FALSE
+EMP022,fleetPass123,ABC144,A3 TDI,FALSE
+EMP023,securePass123,ABC145,Cruze Diesel,FALSE
+EMP024,password456,ABC146,GLC 300e 4MATIC,FALSE
+EMP025,admin789,ABC147,i3,TRUE
+EMP026,pass678,ABC148,F-150 Hybrid,FALSE
+EMP027,fleetPass123,ABC149,Silverado Diesel,FALSE
+EMP028,securePass123,ABC150,Titan XD Diesel,FALSE
+EMP029,password456,ABC151,Clarity Plug-In Hybrid,TRUE
+EMP030,pass678,ABC152,Mirai,FALSE
+EMP031,admin789,ABC153,Outback,TRUE
+EMP032,password456,ABC154,Mazda6,FALSE
+EMP033,pass678,ABC155,Soul,FALSE
+EMP034,securePass123,ABC156,Ioniq Hybrid,FALSE
+EMP035,admin789,ABC157,S60,TRUE
+EMP036,password456,ABC158,E-Class,FALSE
+EMP037,pass678,ABC159,Q5 TDI,FALSE
+EMP038,securePass123,ABC160,Mustang Mach-E,FALSE
+EMP039,admin789,ABC161,Highlander Hybrid,TRUE
+EMP040,pass678,ABC162,LS 500h,FALSE
+EMP041,password456,ABC163,5 Series,FALSE
+EMP042,pass678,ABC164,Wrangler 4xe,FALSE
+EMP043,securePass123,ABC165,Equinox,FALSE
+EMP044,admin789,ABC166,Terrain,TRUE
+EMP045,password456,ABC167,Envision,FALSE
+EMP046,pass678,ABC168,Kona Electric,FALSE
+EMP047,securePass123,ABC169,Model 3,FALSE
+EMP048,admin789,ABC170,Land Cruiser,TRUE
+EMP049,pass678,ABC171,Explorer Hybrid,FALSE
+EMP050,password456,ABC172,Civic Type R,FALSE
+EMP051,pass678,ABC173,E-Tron,FALSE
+EMP052,securePass123,ABC174,S-Class,FALSE
+EMP053,admin789,ABC175,X5 xDrive45e,TRUE
+EMP054,pass678,ABC176,XC90 Hybrid,FALSE
+EMP055,password456,ABC177,Trailblazer,FALSE
+EMP056,pass678,ABC178,Kicks,FALSE
+EMP057,securePass123,ABC179,Forester,FALSE
+EMP058,admin789,ABC180,C-HR,TRUE
+EMP059,pass678,ABC181,CX-5,FALSE
+EMP060,password456,ABC182,CR-V Hybrid,FALSE
+EMP061,pass678,ABC183,Santa Fe,FALSE
+EMP062,securePass123,ABC184,Seltos,FALSE
+EMP063,admin789,ABC185,Tiguan,TRUE
+EMP064,pass678,ABC186,RX 450h,FALSE
+EMP065,password456,ABC187,7 Series,FALSE
+EMP066,pass678,ABC188,A4 TDI,FALSE
+EMP067,securePass123,ABC189,A-Class,FALSE
+EMP068,admin789,ABC190,Model Y,TRUE
+EMP069,pass678,ABC191,Bronco Sport,FALSE
+EMP070,password456,ABC192,Avalon Hybrid,FALSE

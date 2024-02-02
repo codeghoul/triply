@@ -37,6 +37,7 @@ import me.jysh.triply.service.RoleService;
 import me.jysh.triply.service.VehicleModelService;
 import me.jysh.triply.utils.CsvUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,6 +56,8 @@ public class CompanyFacade {
   private final RoleService roleService;
 
   private final MileageService mileageService;
+
+  private final PasswordEncoder passwordEncoder;
 
   /**
    * Creates a new company.
@@ -87,9 +90,13 @@ public class CompanyFacade {
           CompanyFleetUploadEntry.class);
       final Map<String, VehicleModelEntity> vehicleModelMap = getVehicleModels(entries);
 
-      final List<EmployeeEntity> employeeEntities = entries.stream()
-          .map(entry -> EmployeeMapper.toEmployeeEntry(companyEntry.getId(), entry,
-              vehicleModelMap, companyRoles)).collect(Collectors.toList());
+      final List<EmployeeEntity> employeeEntities = new ArrayList<>();
+      for (CompanyFleetUploadEntry entry : entries) {
+        EmployeeEntity employee = EmployeeMapper.toEmployeeEntry(companyEntry.getId(), entry,
+            vehicleModelMap, companyRoles);
+        employee.setPassword(passwordEncoder.encode(entry.getPassword()));
+        employeeEntities.add(employee);
+      }
 
       return employeeService.saveAll(employeeEntities);
     } catch (IOException e) {

@@ -18,7 +18,7 @@ public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Long> 
   Optional<EmployeeEntity> findByCompanyIdAndUsername(final Long companyEntityId,
       final String username);
 
-  Optional<EmployeeEntity> findByUsernameAndPassword(final String username, final String password);
+  Optional<EmployeeEntity> findByUsername(final String username);
 
   List<EmployeeEntity> findAllByCompanyIdAndUsernameIn(final Long companyId,
       final Set<String> employees);

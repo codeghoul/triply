@@ -7,11 +7,14 @@ import me.jysh.triply.dtos.RefreshTokenEntry;
 import me.jysh.triply.dtos.TokenEntry;
 import me.jysh.triply.dtos.response.LoginResponse;
 import me.jysh.triply.dtos.response.RefreshResponse;
+import me.jysh.triply.entity.EmployeeEntity;
 import me.jysh.triply.exception.LoginException;
 import me.jysh.triply.exception.NotFoundException;
+import me.jysh.triply.mappers.EmployeeMapper;
 import me.jysh.triply.service.EmployeeService;
 import me.jysh.triply.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthFacade {
 
   private final EmployeeService employeeService;
+
   private final TokenService tokenService;
+
+  private final PasswordEncoder passwordEncoder;
 
   /**
    * Performs login for the given employeeId and password.
@@ -34,8 +40,11 @@ public class AuthFacade {
   @Transactional
   public LoginResponse login(final String employeeId, final String password) {
     try {
-      final EmployeeEntry employeeEntry = employeeService.findByEmployeeIdAndPassword(employeeId,
-          password);
+      final EmployeeEntity employeeEntity = employeeService.findByUsername(employeeId);
+      if (!passwordEncoder.matches(password, employeeEntity.getPassword())) {
+        throw new LoginException(employeeId);
+      }
+      final EmployeeEntry employeeEntry = EmployeeMapper.toEntry(employeeEntity);
       final TokenEntry tokens = tokenService.createTokens(employeeEntry);
       log.info("Successful login for employeeId: {}", employeeId);
       return new LoginResponse(employeeEntry, tokens);
