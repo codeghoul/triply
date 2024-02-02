@@ -23,4 +23,6 @@ public final class Constants {
   public static final String ROLE_SUPER_ADMIN = "ROLE_SUPER_ADMIN";
 
   public static final Set<String> COMPANY_ROLES = Set.of(ROLE_COMPANY_ADMIN, ROLE_COMPANY_EMPLOYEE);
+
+  public static final Double DISTANCE_RANGE = 10D;
 }

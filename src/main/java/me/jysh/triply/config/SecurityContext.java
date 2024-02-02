@@ -13,7 +13,9 @@ import me.jysh.triply.dtos.EmployeeEntry;
 public final class SecurityContext {
 
   private static final ThreadLocal<Long> LOGGED_IN_EMPLOYEE_ID = new ThreadLocal<>();
+
   private static final ThreadLocal<Long> LOGGED_IN_EMPLOYEE_COMPANY_ID = new ThreadLocal<>();
+
   private static final ThreadLocal<Set<String>> LOGGED_IN_EMPLOYEE_ROLES = new ThreadLocal<>();
 
   /**

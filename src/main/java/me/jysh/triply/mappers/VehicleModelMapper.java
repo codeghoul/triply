@@ -3,7 +3,9 @@ package me.jysh.triply.mappers;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import me.jysh.triply.dtos.VehicleModelEntry;
+import me.jysh.triply.dtos.VehicleModelMileageSummaryEntry;
 import me.jysh.triply.entity.VehicleModelEntity;
+import me.jysh.triply.entity.projections.VehicleModelMileageSummary;
 
 @NoArgsConstructor(access = AccessLevel.NONE)
 public final class VehicleModelMapper {
@@ -25,6 +27,16 @@ public final class VehicleModelMapper {
     entry.setMake(entity.getMake());
     entry.setFuelType(entity.getFuelType());
     entry.setEmissionPerKm(entity.getEmissionPerKm());
+    return entry;
+  }
+
+  public static VehicleModelMileageSummaryEntry toEntry(final VehicleModelMileageSummary entity) {
+    final VehicleModelMileageSummaryEntry entry = new VehicleModelMileageSummaryEntry();
+    entry.setFuelType(entity.getFuelType());
+    entry.setName(entity.getName());
+    entry.setMake(entity.getMake());
+    entry.setAvgEmission(entity.getAvgEmission());
+    entry.setAvgDistanceTravelled(entity.getAvgDistanceTravelled());
     return entry;
   }
 }

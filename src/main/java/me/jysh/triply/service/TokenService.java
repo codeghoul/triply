@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
- * Service class for managing authentication tokens.
+ * Service class for interacting with {@link RefreshTokenEntity} repository, and managing tokens.
  */
 @Service
 @Log4j2

@@ -1,5 +1,6 @@
 package me.jysh.triply.facade;
 
+import java.io.IOException;
 import java.time.Month;
 import java.time.Year;
 import java.util.ArrayList;
@@ -24,9 +25,11 @@ import me.jysh.triply.entity.MileageEntity;
 import me.jysh.triply.entity.RoleEntity;
 import me.jysh.triply.entity.VehicleEntity;
 import me.jysh.triply.entity.VehicleModelEntity;
+import me.jysh.triply.exception.BadRequestException;
 import me.jysh.triply.exception.NotFoundException;
 import me.jysh.triply.exception.UnauthorizedException;
 import me.jysh.triply.mappers.CompanyMapper;
+import me.jysh.triply.mappers.EmployeeMapper;
 import me.jysh.triply.service.CompanyService;
 import me.jysh.triply.service.EmployeeService;
 import me.jysh.triply.service.MileageService;
@@ -52,29 +55,6 @@ public class CompanyFacade {
   private final RoleService roleService;
 
   private final MileageService mileageService;
-
-  private static EmployeeEntity toEmployeeEntry(final Long companyId,
-      final CompanyFleetUploadEntry entry, final Map<String, VehicleModelEntity> vehicles,
-      final Map<String, RoleEntity> eligibleRoles) {
-    final EmployeeEntity employeeEntity = new EmployeeEntity();
-    employeeEntity.setCompanyId(companyId);
-    employeeEntity.setUsername(entry.getEmployeeId());
-    employeeEntity.setPassword(entry.getPassword());
-    if (entry.getAdmin()) {
-      employeeEntity.setRoles(Set.of(eligibleRoles.get(Constants.ROLE_COMPANY_ADMIN)));
-    }
-    employeeEntity.setRoles(Set.of(eligibleRoles.get(Constants.ROLE_COMPANY_EMPLOYEE)));
-
-    final VehicleEntity vehicleEntity = new VehicleEntity();
-    vehicleEntity.setRegistrationNumber(entry.getRegistrationNumber());
-    final VehicleModelEntity vehicleModel = vehicles.get(entry.getVehicleModel());
-    vehicleEntity.setVehicleModel(vehicleModel);
-
-    vehicleEntity.setEmployee(employeeEntity);
-    employeeEntity.setVehicle(vehicleEntity);
-
-    return employeeEntity;
-  }
 
   /**
    * Creates a new company.
@@ -107,18 +87,19 @@ public class CompanyFacade {
           CompanyFleetUploadEntry.class);
       final Map<String, VehicleModelEntity> vehicleModelMap = getVehicleModels(entries);
 
-      final List<EmployeeEntity> employeeEntities = new ArrayList<>();
-      for (CompanyFleetUploadEntry entry : entries) {
-        final EmployeeEntity employeeEntity = toEmployeeEntry(companyEntry.getId(), entry,
-            vehicleModelMap, companyRoles);
-        employeeEntities.add(employeeEntity);
-      }
+      final List<EmployeeEntity> employeeEntities = entries.stream()
+          .map(entry -> EmployeeMapper.toEmployeeEntry(companyEntry.getId(), entry,
+              vehicleModelMap, companyRoles)).collect(Collectors.toList());
 
       return employeeService.saveAll(employeeEntities);
+    } catch (IOException e) {
+      log.error("Error occurred during employee upload for company with ID {}: {}", companyId,
+          e.getMessage());
+      throw new BadRequestException(e.getMessage());
     } catch (Exception e) {
       log.error("Error occurred during employee upload for company with ID {}: {}", companyId,
           e.getMessage());
-      throw new RuntimeException(e);
+      throw e;
     }
   }
 
@@ -143,16 +124,8 @@ public class CompanyFacade {
       final List<CompanyFleetMileageUploadEntry> entries = CsvUtils.multipartFileToEntry(file,
           CompanyFleetMileageUploadEntry.class);
 
-      final Set<String> employeeUsernames = entries.stream()
-          .map(CompanyFleetMileageUploadEntry::getEmployeeId).collect(Collectors.toSet());
-      final Map<String, EmployeeEntity> employees = employeeService.getCompanyEmployeeByUsernames(
-          companyEntry.getId(), employeeUsernames);
-      if (employeeUsernames.size() > employees.keySet().size()) {
-        final Set<String> unregisteredEmployees = employeeUsernames.stream()
-            .filter(model -> !employees.containsKey(model)).collect(Collectors.toSet());
-        throw new NotFoundException(
-            String.format("Some employees not found :: %s", unregisteredEmployees));
-      }
+      final Map<String, EmployeeEntity> employees = getExistingEmployeesForMileageUpload(
+          entries, companyEntry);
 
       final Set<Long> vehicleIds = employees.values().stream()
           .map(employee -> employee.getVehicle().getId()).collect(Collectors.toSet());
@@ -165,31 +138,55 @@ public class CompanyFacade {
         final VehicleEntity vehicle = employee.getVehicle();
         final MileageEntity mileageEntity = existingMileage.getOrDefault(vehicle.getId(),
             new MileageEntity());
-        mileageEntity.setYear(year);
-        mileageEntity.setMonth(month);
-        mileageEntity.setWeek(week);
-        mileageEntity.setEnergyConsumed(entry.getEnergyConsumed());
-        mileageEntity.setFuelConsumed(entry.getFuelConsumed());
-        mileageEntity.setDistanceTravelledInKm(entry.getDistanceTravelledInKm());
-        mileageEntity.setTotalEmission(
-            entry.getDistanceTravelledInKm() * vehicle.getVehicleModel().getEmissionPerKm());
-        mileageEntity.setVehicleId(vehicle.getId());
+        updateMileageEntity(year, month, week, entry, mileageEntity, vehicle);
         toStore.add(mileageEntity);
       }
 
       return mileageService.saveAll(toStore);
-    } catch (Exception e) {
+    } catch (IOException e) {
       log.error("Error occurred during mileage upload for company with ID {}: {}", companyId,
           e.getMessage());
-      throw new RuntimeException(e);
+      throw new BadRequestException(e.getMessage());
+    } catch (Exception e) {
+      log.error("Error occurred during employee upload for company with ID {}: {}", companyId,
+          e.getMessage());
+      throw e;
     }
+  }
+
+  private Map<String, EmployeeEntity> getExistingEmployeesForMileageUpload(
+      List<CompanyFleetMileageUploadEntry> entries, CompanyEntry companyEntry) {
+    final Set<String> employeeUsernames = entries.stream()
+        .map(CompanyFleetMileageUploadEntry::getEmployeeId).collect(Collectors.toSet());
+    final Map<String, EmployeeEntity> employees = employeeService.getCompanyEmployeeByUsernames(
+        companyEntry.getId(), employeeUsernames);
+    if (employeeUsernames.size() > employees.keySet().size()) {
+      final Set<String> unregisteredEmployees = employeeUsernames.stream()
+          .filter(model -> !employees.containsKey(model)).collect(Collectors.toSet());
+      throw new NotFoundException(
+          String.format("Some employees not found :: %s", unregisteredEmployees));
+    }
+    return employees;
+  }
+
+  private static void updateMileageEntity(Year year, Month month, Integer week,
+      CompanyFleetMileageUploadEntry entry, MileageEntity mileageEntity, VehicleEntity vehicle) {
+    mileageEntity.setYear(year);
+    mileageEntity.setMonth(month);
+    mileageEntity.setWeek(week);
+    mileageEntity.setEnergyConsumed(entry.getEnergyConsumed());
+    mileageEntity.setFuelConsumed(entry.getFuelConsumed());
+    mileageEntity.setDistanceTravelledInKm(entry.getDistanceTravelledInKm());
+    mileageEntity.setTotalEmission(
+        entry.getDistanceTravelledInKm() * vehicle.getVehicleModel().getEmissionPerKm());
+    mileageEntity.setVehicleId(vehicle.getId());
   }
 
   private void validateUploadAccess(final Long companyId) {
     if (Objects.equals(SecurityContext.getLoggedInEmployeeCompanyId(), companyId)) {
       return;
     }
-    throw new UnauthorizedException("User does not belong to this company");
+    throw new UnauthorizedException("User does not belong to this company.");
   }
 
   private Map<String, VehicleModelEntity> getVehicleModels(
