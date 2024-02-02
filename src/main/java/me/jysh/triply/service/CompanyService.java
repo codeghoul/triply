@@ -1,8 +1,12 @@
 package me.jysh.triply.service;
 
+import java.time.Month;
+import java.time.Year;
 import lombok.RequiredArgsConstructor;
+import me.jysh.triply.dtos.CompanyEmissionSummaryEntry;
 import me.jysh.triply.dtos.CompanyEntry;
 import me.jysh.triply.entity.CompanyEntity;
+import me.jysh.triply.entity.projections.CompanyEmissionSummary;
 import me.jysh.triply.exception.NotFoundException;
 import me.jysh.triply.mappers.CompanyMapper;
 import me.jysh.triply.repository.CompanyRepository;
@@ -25,5 +29,16 @@ public class CompanyService {
   @Transactional
   public CompanyEntry save(final CompanyEntity company) {
     return CompanyMapper.toEntry(companyRepository.save(company));
+  }
+
+  public CompanyEmissionSummaryEntry getCompanyEmissionSummary(final Long companyId,
+      final Year year, final
+  Month month, final Integer week) {
+    final Integer yearVal = year == null ? null : year.getValue();
+    final String monthVal = month == null ? null : month.name();
+    final CompanyEmissionSummary companyEmissionSummary = companyRepository.getCompanyEmissionSummary(
+        companyId, yearVal, monthVal, week);
+
+    return CompanyMapper.toEntry(companyEmissionSummary);
   }
 }
