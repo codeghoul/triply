@@ -13,8 +13,8 @@ Toyota,Prius,PREMIUM_GASOLINE,90.2
 Honda,Insight,PREMIUM_GASOLINE,92.7
 Ford,C-Max Hybrid,PREMIUM_GASOLINE,95.1
 Chevrolet,Volt,PREMIUM_GASOLINE,88.4
-Nissan,Leaf,ELECTRIC,0.0
-Tesla,Model S,ELECTRIC,0.0
+Nissan,Leaf,ELECTRIC,20.5
+Tesla,Model S,ELECTRIC,15.7
 Toyota,RAV4 Hybrid,HYBRID,110.8
 Lexus,UX 250h,HYBRID,108.3
 Ford,Escape Hybrid,HYBRID,112.6
@@ -28,33 +28,33 @@ Ford,F-150 Hybrid,HYBRID,120.4
 Chevrolet,Silverado Diesel,DIESEL,98.9
 Nissan,Titan XD Diesel,DIESEL,99.7
 Honda,Clarity Plug-In Hybrid,HYBRID,94.5
-Toyota,Mirai,HYDROGEN,0.0
+Toyota,Mirai,HYDROGEN,19.3
 Subaru,Outback,REGULAR_GASOLINE,126.8
 Mazda,Mazda6,REGULAR_GASOLINE,124.3
-Kia,Soul,ELECTRIC,0.0
+Kia,Soul,ELECTRIC,22.3
 Hyundai,Ioniq Hybrid,HYBRID,114.2
 Volvo,S60,DIESEL,101.4
-Mercedes-Benz,E-Class,HYBRID,98.0
+Mercedes-Benz,E-Class,HYBRID,98
 Audi,Q5 TDI,DIESEL,106.1
-Ford,Mustang Mach-E,ELECTRIC,0.0
+Ford,Mustang Mach-E,ELECTRIC,18.6
 Toyota,Highlander Hybrid,HYBRID,116.5
 Lexus,LS 500h,HYBRID,107.9
 BMW,5 Series,HYBRID,96.8
-Jeep,Wrangler 4xe,ELECTRIC,0.0
+Jeep,Wrangler 4xe,ELECTRIC,24.2
 Chevrolet,Equinox,REGULAR_GASOLINE,123.9
 GMC,Terrain,REGULAR_GASOLINE,125.1
-Buick,Envision,REGULAR_GASOLINE,128.0
-Hyundai,Kona Electric,ELECTRIC,0.0
-Tesla,Model 3,ELECTRIC,0.0
+Buick,Envision,REGULAR_GASOLINE,128
+Hyundai,Kona Electric,ELECTRIC,23.5
+Tesla,Model 3,ELECTRIC,12.8
 Toyota,Land Cruiser,HYBRID,118.7
 Ford,Explorer Hybrid,HYBRID,112.3
 Honda,Civic Type R,PREMIUM_GASOLINE,89.6
-Audi,E-Tron,ELECTRIC,0.0
+Audi,E-Tron,ELECTRIC,21.4
 Mercedes-Benz,S-Class,HYBRID,97.3
 BMW,X5 xDrive45e,HYBRID,99.5
 Volvo,XC90 Hybrid,HYBRID,105.6
 Chevrolet,Trailblazer,REGULAR_GASOLINE,124.7
-Nissan,Kicks,REGULAR_GASOLINE,129.0
+Nissan,Kicks,REGULAR_GASOLINE,129
 Subaru,Forester,REGULAR_GASOLINE,127.8
 Toyota,C-HR,HYBRID,109.2
 Mazda,CX-5,REGULAR_GASOLINE,126.4
@@ -62,10 +62,10 @@ Honda,CR-V Hybrid,HYBRID,113.7
 Hyundai,Santa Fe,REGULAR_GASOLINE,123.1
 Kia,Seltos,REGULAR_GASOLINE,121.4
 Volkswagen,Tiguan,REGULAR_GASOLINE,128.2
-Lexus,RX 450h,HYBRID,110.0
+Lexus,RX 450h,HYBRID,110
 BMW,7 Series,HYBRID,98.6
 Audi,A4 TDI,DIESEL,105.4
 Mercedes-Benz,A-Class,HYBRID,99.8
-Tesla,Model Y,ELECTRIC,0.0
+Tesla,Model Y,ELECTRIC,14.6
 Ford,Bronco Sport,REGULAR_GASOLINE,122.5
 Toyota,Avalon Hybrid,HYBRID,117.3
