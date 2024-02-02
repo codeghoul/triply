@@ -10,15 +10,21 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import me.jysh.triply.dtos.EmployeeEmissionSummaryEntry;
 import me.jysh.triply.dtos.EmployeeEntry;
+import me.jysh.triply.dtos.VehicleModelMileageSummaryEntry;
 import me.jysh.triply.entity.EmployeeEntity;
 import me.jysh.triply.entity.projections.EmployeeEmissionSummary;
+import me.jysh.triply.entity.projections.VehicleModelMileageSummary;
 import me.jysh.triply.exception.NotFoundException;
 import me.jysh.triply.mappers.EmployeeMapper;
+import me.jysh.triply.mappers.VehicleModelMapper;
 import me.jysh.triply.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Service class for interacting with {@link EmployeeEntity} repository.
+ */
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class EmployeeService {
@@ -78,5 +84,12 @@ public class EmployeeService {
         companyId, employeeId, yearVal, monthVal, week);
 
     return EmployeeMapper.toEntry(summary);
+  }
+
+  public List<VehicleModelMileageSummaryEntry> getVehicleModelsMileageSummaries(
+      final Long employeeId) {
+    final List<VehicleModelMileageSummary> summaries = repository.getEmployeeVehicleModelsMileageSummaries(
+        employeeId);
+    return summaries.stream().map(VehicleModelMapper::toEntry).toList();
   }
 }

@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 @NoArgsConstructor(onConstructor_ = {@Autowired})
 public final class Queries {
 
+  /**
+   * Query to retrieve company emission summary based on various filters.
+   */
   public static final String GET_COMPANY_EMISSION_SUMMARY = """
           SELECT
               ROUND(count(distinct te.id), 2) AS total_employees,
@@ -32,6 +35,9 @@ public final class Queries {
               AND (tm.month = :month OR :month IS NULL)
       """;
 
+  /**
+   * Query to retrieve employee emission summary based on various filters.
+   */
   public static final String GET_EMPLOYEE_EMISSION_SUMMARY = """
           SELECT
               ROUND(count(distinct tv.id), 2) AS total_vehicles,
@@ -51,5 +57,50 @@ public final class Queries {
               AND (tm.week = :week OR :week IS NULL)
               AND (tm.year = :year OR :year IS NULL)
               AND (tm.month = :month OR :month IS NULL)
+      """;
+
+  /**
+   * Query to retrieve electric vehicle suggestions based on distance range.
+   */
+  public static final String GET_ELECTRIC_VEHICLE_SUGGESTIONS = """
+          SELECT
+              fuel_type,
+              make,
+              name,
+              ROUND(AVG(m.distance_travelled)) AS avg_distance_travelled,
+              ROUND(AVG(m.total_emission), 2) AS avg_emission
+          FROM
+              vehicle_model vm
+                  LEFT JOIN
+              vehicle v ON v.vehicle_model_id = vm.id
+                  LEFT JOIN
+              mileage m ON m.vehicle_id = v.id
+          WHERE
+              vm.fuel_type = 'ELECTRIC'
+          GROUP BY vm.fuel_type , vm.make , vm.name
+          HAVING avg_distance_travelled BETWEEN :low AND :high
+      """;
+
+  /**
+   * Query to retrieve vehicle models' mileage summaries for a specific employee.
+   */
+  public static final String GET_EMPLOYEE_VEHICLE_MODELS_MILEAGE_SUMMARIES = """
+          SELECT
+              fuel_type,
+              make,
+              name,
+              ROUND(AVG(m.distance_travelled)) AS avg_distance_travelled,
+              ROUND(AVG(m.total_emission), 2) AS avg_emission
+          FROM
+              employee e
+                  LEFT JOIN
+              vehicle v ON e.id = v.employee_id
+                  LEFT JOIN
+              vehicle_model vm ON v.vehicle_model_id = vm.id
+                  LEFT JOIN
+              mileage m ON m.vehicle_id = v.id
+          WHERE
+            e.id = :employee_id
+          GROUP BY E.id, vm.fuel_type , vm.make , vm.name;
       """;
 }

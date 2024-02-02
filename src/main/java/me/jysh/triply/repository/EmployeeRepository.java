@@ -6,6 +6,7 @@ import java.util.Set;
 import me.jysh.triply.constant.Queries;
 import me.jysh.triply.entity.EmployeeEntity;
 import me.jysh.triply.entity.projections.EmployeeEmissionSummary;
+import me.jysh.triply.entity.projections.VehicleModelMileageSummary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,4 +30,8 @@ public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Long> 
       @Param("year") final Integer year,
       @Param("month") final String month,
       @Param("week") final Integer week);
+
+  @Query(value = Queries.GET_EMPLOYEE_VEHICLE_MODELS_MILEAGE_SUMMARIES, nativeQuery = true)
+  List<VehicleModelMileageSummary> getEmployeeVehicleModelsMileageSummaries(
+      @Param("employee_id") final Long employeeId);
 }

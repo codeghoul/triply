@@ -9,12 +9,16 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import me.jysh.triply.dtos.MileageEntry;
+import me.jysh.triply.entity.EmployeeEntity;
 import me.jysh.triply.entity.MileageEntity;
 import me.jysh.triply.mappers.MileageMapper;
 import me.jysh.triply.repository.MileageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class for interacting with {@link MileageEntity} repository.
+ */
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class MileageService {

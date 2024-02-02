@@ -1,8 +1,10 @@
 package me.jysh.triply.exception;
 
 import me.jysh.triply.dtos.response.ErrorResponse;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -79,6 +81,45 @@ public class GlobalExceptionHandler {
         new ErrorResponse(HttpStatus.FORBIDDEN.value(),
             HttpStatus.FORBIDDEN.getReasonPhrase(),
             ex.getMessage()));
+  }
+
+  /**
+   * Handles DataIntegrityViolationException and returns an CONFLICT status with a custom error
+   * message.
+   *
+   * @param ex The Exception that occurred.
+   * @return ResponseEntity with CONFLICT status and error message.
+   */
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(
+      DataIntegrityViolationException ex) {
+    String rootMsg = getRootCauseMessage(ex);
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(
+        new ErrorResponse(HttpStatus.CONFLICT.value(),
+            HttpStatus.CONFLICT.getReasonPhrase(),
+            rootMsg));
+  }
+
+  @NonNull
+  private static String getRootCauseMessage(@NonNull Throwable t) {
+    Throwable rootCause = t;
+    while (rootCause.getCause() != null && rootCause.getCause() != rootCause) {
+      rootCause = rootCause.getCause();
+    }
+    return rootCause.getMessage();
+  }
+
+  /**
+   * Handles BadRequestException and returns an BAD_REQUEST status with a custom error message.
+   *
+   * @param ex The Exception that occurred.
+   * @return ResponseEntity with BAD_REQUEST status and error message.
+   */
+  @ExceptionHandler(BadRequestException.class)
+  public ResponseEntity<ErrorResponse> handleBadRequestException(Exception ex) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+        new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
+            HttpStatus.BAD_REQUEST.getReasonPhrase(), ex.getMessage()));
   }
 
   /**
