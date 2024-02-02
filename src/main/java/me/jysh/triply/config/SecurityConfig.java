@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 import me.jysh.triply.config.interceptors.AuthenticationInterceptor;
 import me.jysh.triply.config.interceptors.AuthorizationInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -31,5 +34,10 @@ public class SecurityConfig implements WebMvcConfigurer {
         .excludePathPatterns("/auth/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**");
 
     registry.addInterceptor(authZInterceptor);
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 }

@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonPropertyOrder({"employeeId", "distanceTravelled", "energyConsumed", "fuelConsumed"})
+@JsonPropertyOrder({"employeeId", "distanceTravelledInKm", "energyConsumed", "fuelConsumed"})
 public class CompanyFleetMileageUploadEntry {
 
   /**

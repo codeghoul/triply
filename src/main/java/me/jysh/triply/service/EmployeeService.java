@@ -37,15 +37,9 @@ public class EmployeeService {
     return savedEmployees.stream().map(EmployeeMapper::toEntry).toList();
   }
 
-  public EmployeeEntry findByEmployeeIdAndPassword(final String username, final String password) {
-    final Optional<EmployeeEntity> optionalEmployee = repository.findByUsernameAndPassword(username,
-        password);
-
-    if (optionalEmployee.isEmpty()) {
-      throw new NotFoundException(username);
-    }
-
-    return optionalEmployee.map(EmployeeMapper::toEntry).get();
+  public EmployeeEntity findByUsername(final String username) {
+    final Optional<EmployeeEntity> optionalEmployee = repository.findByUsername(username);
+    return optionalEmployee.orElseThrow(() -> new NotFoundException(username));
   }
 
   public EmployeeEntry findById(final Long employeeId) {
