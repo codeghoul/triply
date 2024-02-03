@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jysh.triply.dtos.VehicleModelEntry;
 import me.jysh.triply.entity.VehicleModelEntity;
+import me.jysh.triply.exception.BadRequestException;
 import me.jysh.triply.mappers.VehicleModelMapper;
 import me.jysh.triply.service.VehicleModelService;
 import me.jysh.triply.utils.CsvUtils;
@@ -62,7 +63,7 @@ public class VehicleModelFacade {
       return savedModels;
     } catch (IOException e) {
       log.error("Error occurred during vehicle model upload: {}", e.getMessage());
-      throw new RuntimeException(e);
+      throw new BadRequestException(e.getMessage());
     }
   }
 }

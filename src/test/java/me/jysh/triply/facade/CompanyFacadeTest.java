@@ -1,8 +1,8 @@
 package me.jysh.triply.facade;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anySet;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,188 +10,269 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.time.Month;
 import java.time.Year;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import me.jysh.triply.constant.Constants;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import me.jysh.triply.config.SecurityContext;
 import me.jysh.triply.dtos.CompanyEntry;
-import me.jysh.triply.dtos.CompanyFleetMileageUploadEntry;
-import me.jysh.triply.dtos.CompanyFleetUploadEntry;
 import me.jysh.triply.dtos.EmployeeEntry;
 import me.jysh.triply.dtos.MileageEntry;
-import me.jysh.triply.dtos.enums.FuelType;
 import me.jysh.triply.entity.CompanyEntity;
 import me.jysh.triply.entity.EmployeeEntity;
 import me.jysh.triply.entity.MileageEntity;
 import me.jysh.triply.entity.RoleEntity;
 import me.jysh.triply.entity.VehicleEntity;
 import me.jysh.triply.entity.VehicleModelEntity;
+import me.jysh.triply.exception.BadRequestException;
+import me.jysh.triply.exception.NotFoundException;
+import me.jysh.triply.exception.UnauthorizedException;
+import me.jysh.triply.mappers.CompanyMapper;
+import me.jysh.triply.mappers.EmployeeMapper;
+import me.jysh.triply.mappers.MileageMapper;
+import me.jysh.triply.mocks.TestMocks;
 import me.jysh.triply.service.CompanyService;
 import me.jysh.triply.service.EmployeeService;
 import me.jysh.triply.service.MileageService;
 import me.jysh.triply.service.RoleService;
 import me.jysh.triply.service.VehicleModelService;
-import me.jysh.triply.utils.CsvUtils;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest(classes = CompanyFacade.class)
+@ExtendWith(SpringExtension.class)
 class CompanyFacadeTest {
 
-  @Mock
+  @MockBean
   private CompanyService companyService;
 
-  @Mock
+  @MockBean
   private EmployeeService employeeService;
 
-  @Mock
+  @MockBean
   private VehicleModelService vehicleModelService;
 
-  @Mock
+  @MockBean
   private RoleService roleService;
 
-  @Mock
+  @MockBean
   private MileageService mileageService;
 
-  @InjectMocks
+  @MockBean
+  private PasswordEncoder passwordEncoder;
+
+  @Autowired
   private CompanyFacade companyFacade;
 
-  @Test
-  void createCompany() {
-    final CompanyEntry inputCompanyEntry = getMockCompanyEntry();
-
-    CompanyEntry outputCompanyEntry = new CompanyEntry();
-    inputCompanyEntry.setName("Triply");
-    when(companyService.save(any(CompanyEntity.class))).thenReturn(outputCompanyEntry);
-
-    CompanyEntry resultCompanyEntry = companyFacade.createCompany(inputCompanyEntry);
-
-    Assertions.assertEquals(outputCompanyEntry, resultCompanyEntry);
-    verify(companyService, times(1)).save(any(CompanyEntity.class));
+  @BeforeEach
+  void setUp() {
+    MockitoAnnotations.openMocks(this);
+    final EmployeeEntry employee = new EmployeeEntry();
+    employee.setRoles(new ArrayList<>());
+    SecurityContext.setSecurityContext(employee);
   }
 
   @Test
-  void uploadEmployees() throws IOException {
-    Long companyId = 1L;
-    MultipartFile mockFile = new MockMultipartFile("test.csv", new byte[0]);
-    CompanyEntry mockCompanyEntry = new CompanyEntry();
-    when(companyService.findById(companyId)).thenReturn(mockCompanyEntry);
+  void testUploadEmployees_Successful() {
+    MockMultipartFile mockMultipartFile = new MockMultipartFile(
+        "file", "test.csv", "text/csv",
+        """
+              employeeId,password,registrationNumber,vehicleModel,admin
+              EMP001,password123,ABC123,Corolla,FALSE
+              EMP002,securePass456,ABC124,Accord,TRUE\s
+            """.getBytes()
+    );
 
-    CompanyFleetUploadEntry mockUploadEntry = new CompanyFleetUploadEntry();
-    List<CompanyFleetUploadEntry> mockEntries = Collections.singletonList(mockUploadEntry);
-    when(CsvUtils.multipartFileToEntry(eq(mockFile), eq(CompanyFleetUploadEntry.class)))
-        .thenReturn(mockEntries);
+    CompanyEntry companyEntry = new CompanyEntry();
+    companyEntry.setId(1L);
 
-    RoleEntity mockRoleEntity = new RoleEntity();
-    Map<String, RoleEntity> mockRoles = Collections.singletonMap(Constants.ROLE_COMPANY_EMPLOYEE,
-        mockRoleEntity);
-    when(roleService.getRoleEntityMap(eq(Constants.COMPANY_ROLES))).thenReturn(mockRoles);
+    final List<RoleEntity> roleEntities = TestMocks.getRoleEntities();
+    final Map<String, RoleEntity> companyRoles = roleEntities.stream()
+        .collect(Collectors.toMap(RoleEntity::getName, Function.identity()));
 
-    VehicleModelEntity mockVehicleModelEntity = new VehicleModelEntity();
-    Map<String, VehicleModelEntity> mockVehicleModelMap = Collections.singletonMap("TestModel",
-        mockVehicleModelEntity);
-    when(vehicleModelService.getVehicleModelEntityMap(Mockito.anyCollection())).thenReturn(
-        mockVehicleModelMap);
+    Map<String, VehicleModelEntity> vehicleModelMap = Map.of(
+        "Corolla", new VehicleModelEntity(),
+        "Accord", new VehicleModelEntity()
+    );
 
-    EmployeeEntity mockEmployeeEntity = new EmployeeEntity();
-    List<EmployeeEntity> mockEmployeeEntities = Collections.singletonList(mockEmployeeEntity);
+    final EmployeeEntity employeeEntity = TestMocks.getEmployeeEntity();
+    final EmployeeEntry entry = EmployeeMapper.toEntry(employeeEntity);
 
-    final EmployeeEntry employeeEntry = new EmployeeEntry();
-    when(employeeService.saveAll(eq(mockEmployeeEntities))).thenReturn(
-        Collections.singletonList(employeeEntry));
+    when(companyService.findById(1L)).thenReturn(companyEntry);
+    when(vehicleModelService.getVehicleModelEntityMap(any())).thenReturn(vehicleModelMap);
+    when(roleService.getRoleEntityMap(any())).thenReturn(companyRoles);
+    when(employeeService.saveAll(any())).thenReturn(List.of(entry));
 
-    List<EmployeeEntry> resultEmployeeEntries = companyFacade.uploadEmployees(companyId, mockFile);
+    List<EmployeeEntry> result = companyFacade.uploadEmployees(1L, mockMultipartFile);
 
-    Assertions.assertEquals(mockEmployeeEntities, resultEmployeeEntries);
-    verify(companyService, times(1)).findById(eq(companyId));
-    verify(roleService, times(1)).getRoleEntityMap(eq(Constants.COMPANY_ROLES));
-    verify(vehicleModelService, times(1)).getVehicleModelEntityMap(
-        eq(Collections.singletonList("modelName")));
-    verify(employeeService, times(1)).saveAll(eq(mockEmployeeEntities));
+    assertEquals(1, result.size());
+    assertEquals(entry.getEmployeeId(), result.get(0).getEmployeeId());
+    verify(companyService, times(1)).findById(1L);
+    verify(vehicleModelService, times(1)).getVehicleModelEntityMap(any());
+    verify(roleService, times(1)).getRoleEntityMap(any());
+    verify(employeeService, times(1)).saveAll(any());
   }
 
   @Test
-  void uploadEmission() throws IOException {
-    Long companyId = 1L;
-    MultipartFile mockFile = new MockMultipartFile("test.csv", new byte[0]);
+  void testUploadEmployees_VehicleModelNotFound() throws IOException {
+    // Arrange
+    MockMultipartFile mockMultipartFile = new MockMultipartFile(
+        "file", "test.csv", "text/csv",
+        """
+              employeeId,password,registrationNumber,vehicleModel,admin
+              EMP001,password123,ABC123,Corolla,FALSE
+              EMP002,securePass456,ABC124,Accord,TRUE\s
+            """.getBytes()
+    );
+
+    CompanyEntry companyEntry = new CompanyEntry();
+    companyEntry.setId(1L);
+
+    Map<String, VehicleModelEntity> vehicleModelMap = Map.of(
+        "Model1", new VehicleModelEntity()
+    );
+
+    when(companyService.findById(1L)).thenReturn(companyEntry);
+    when(vehicleModelService.getVehicleModelEntityMap(any())).thenReturn(vehicleModelMap);
+
+    assertThrows(NotFoundException.class,
+        () -> companyFacade.uploadEmployees(1L, mockMultipartFile));
+  }
+
+  @Test
+  void testUploadEmployees_InvalidCSV() {
+    MockMultipartFile mockMultipartFile = new MockMultipartFile(
+        "file", "test.csv", "text/csv",
+        "invalid_csv_data".getBytes()
+    );
+
+    CompanyEntry companyEntry = new CompanyEntry();
+    companyEntry.setId(1L);
+
+    when(companyService.findById(1L)).thenReturn(companyEntry);
+
+    assertThrows(BadRequestException.class,
+        () -> companyFacade.uploadEmployees(1L, mockMultipartFile));
+    verify(companyService, times(1)).findById(1L);
+  }
+
+  @Test
+  void testUploadMileages_Successful() {
+    MockMultipartFile mockMultipartFile = new MockMultipartFile(
+        "file", "test.csv", "text/csv",
+        """
+            employeeId,distanceTravelledInKm,energyConsumed,fuelConsumed\s
+            john_doe,150,30,15
+            """.getBytes()
+    );
+
+    CompanyEntry companyEntry = new CompanyEntry();
+    companyEntry.setId(1L);
+
     Year year = Year.of(2024);
     Month month = Month.JANUARY;
     Integer week = 1;
 
-    final CompanyEntry mockCompanyEntry = getMockCompanyEntry();
-    when(companyService.findById(companyId)).thenReturn(mockCompanyEntry);
+    final EmployeeEntity employeeEntity = TestMocks.getEmployeeEntity();
+    final EmployeeEntry employeeEntry = EmployeeMapper.toEntry(employeeEntity);
+    Map<String, EmployeeEntity> employees = Map.of(
+        "john_doe", employeeEntity
+    );
+    SecurityContext.setSecurityContext(employeeEntry);
 
-    final List<CompanyFleetMileageUploadEntry> mockEntries = getMockCompanyFleetMileageUploadEntries();
-    when(CsvUtils.multipartFileToEntry(eq(mockFile), eq(CompanyFleetMileageUploadEntry.class)))
-        .thenReturn(mockEntries);
+    VehicleEntity vehicle = new VehicleEntity();
+    vehicle.setId(1L);
 
-    final EmployeeEntity mockEmployeeEntity = getMockEmployeeEntity();
+    MileageEntity mileageEntity = TestMocks.getMileageEntity();
+    final MileageEntry mileageEntry = MileageMapper.toEntry(mileageEntity);
 
-    Map<String, EmployeeEntity> mockEmployees = Collections.singletonMap("TestUser",
-        mockEmployeeEntity);
-    when(employeeService.getCompanyEmployeeByUsernames(eq(mockCompanyEntry.getId()), anySet()))
-        .thenReturn(mockEmployees);
+    when(companyService.findById(1L)).thenReturn(companyEntry);
+    when(employeeService.getCompanyEmployeeByUsernames(any(), any())).thenReturn(employees);
+    when(mileageService.findAllByTimeAndVehicleIdIn(year, month, week,
+        Set.of(vehicle.getId()))).thenReturn(Map.of(vehicle.getId(), mileageEntity));
+    when(mileageService.saveAll(any())).thenReturn(List.of(mileageEntry));
 
-    MileageEntity mockMileageEntity = new MileageEntity();
-    List<MileageEntity> mockMileageEntities = Collections.singletonList(mockMileageEntity);
-    when(mileageService.saveAll(eq(mockMileageEntities))).thenReturn(mockMileageEntities);
+    List<MileageEntry> result = companyFacade.uploadMileages(1L, year, month, week,
+        mockMultipartFile);
 
-    List<MileageEntry> resultMileageEntries = companyFacade.uploadMileages(companyId, year, month,
-        week, mockFile);
-
-    Assertions.assertEquals(mockMileageEntities, resultMileageEntries);
-    verify(companyService, times(1)).findById(eq(companyId));
-    verify(employeeService, times(1)).getCompanyEmployeeByUsernames(eq(mockCompanyEntry.getId()),
-        anySet());
-    verify(mileageService, times(1)).saveAll(eq(mockMileageEntities));
+    assertEquals(1, result.size());
+    assertEquals(30, result.get(0).getEnergyConsumed());
+    verify(companyService, times(1)).findById(1L);
+    verify(employeeService, times(1)).getCompanyEmployeeByUsernames(any(), any());
+    verify(mileageService, times(1)).findAllByTimeAndVehicleIdIn(year, month, week,
+        Set.of(vehicle.getId()));
+    verify(mileageService, times(1)).saveAll(any());
   }
 
-  private static EmployeeEntity getMockEmployeeEntity() {
-    final EmployeeEntity mockEmployeeEntity = new EmployeeEntity();
-    mockEmployeeEntity.setCompanyId(1L);
-    mockEmployeeEntity.setUsername("10101");
-    final VehicleEntity mockVehicleEntity = getMockVehicleEntity();
-    mockEmployeeEntity.setVehicle(mockVehicleEntity);
-    mockVehicleEntity.setEmployee(mockEmployeeEntity);
-    return mockEmployeeEntity;
+  @Test
+  void testUploadMileages_Unauthorized() throws IOException {
+    MockMultipartFile mockMultipartFile = new MockMultipartFile(
+        "file", "test.csv", "text/csv",
+        """
+            employeeId,distanceTravelledInKm,energyConsumed,fuelConsumed\s
+            john_doe,150,30,15
+            """.getBytes()
+    );
+
+    CompanyEntry companyEntry = new CompanyEntry();
+    companyEntry.setId(1L);
+    when(companyService.findById(1L)).thenReturn(companyEntry);
+
+    Year year = Year.of(2022);
+    Month month = Month.JANUARY;
+    Integer week = 1;
+
+    assertThrows(UnauthorizedException.class,
+        () -> companyFacade.uploadMileages(1L, year, month, week, mockMultipartFile));
   }
 
-  private static VehicleEntity getMockVehicleEntity() {
-    VehicleEntity mockVehicleEntity = new VehicleEntity();
-    mockVehicleEntity.setRegistrationNumber("Registration Number");
-    final VehicleModelEntity mockVehicleModelEntity = getMockVehicleModelEntity();
-    mockVehicleEntity.setVehicleModel(mockVehicleModelEntity);
-    return mockVehicleEntity;
+  @Test
+  void testUploadMileages_InvalidCSV() {
+    MockMultipartFile mockMultipartFile = new MockMultipartFile(
+        "file", "test.csv", "text/csv",
+        """
+            employeeId,distanceTravelledInKm,energyConsumed,fuelConsumed\s
+            """.getBytes()
+    );
+
+    final EmployeeEntity employeeEntity = TestMocks.getEmployeeEntity();
+    final EmployeeEntry employeeEntry = EmployeeMapper.toEntry(employeeEntity);
+    SecurityContext.setSecurityContext(employeeEntry);
+
+    CompanyEntry companyEntry = new CompanyEntry();
+    companyEntry.setId(1L);
+
+    Year year = Year.of(2022);
+    Month month = Month.JANUARY;
+    Integer week = 1;
+
+    when(companyService.findById(1L)).thenReturn(companyEntry);
+
+    assertThrows(BadRequestException.class,
+        () -> companyFacade.uploadMileages(1L, year, month, week, mockMultipartFile));
+    verify(companyService, times(1)).findById(1L);
   }
 
-  private static List<CompanyFleetMileageUploadEntry> getMockCompanyFleetMileageUploadEntries() {
-    final CompanyFleetMileageUploadEntry mockUploadEntry = new CompanyFleetMileageUploadEntry();
-    mockUploadEntry.setDistanceTravelledInKm(1.0);
-    mockUploadEntry.setEnergyConsumed(25.0);
-    mockUploadEntry.setFuelConsumed(25.0);
-    mockUploadEntry.setEmployeeId("10101");
-    return Collections.singletonList(mockUploadEntry);
-  }
+  @Test
+  void testCreateCompany_Successful() {
+    final CompanyEntity companyEntity = TestMocks.getCompanyEntity();
+    final CompanyEntry companyEntry = CompanyMapper.toEntry(companyEntity);
 
-  private static CompanyEntry getMockCompanyEntry() {
-    CompanyEntry mockCompanyEntry = new CompanyEntry();
-    mockCompanyEntry.setId(1L);
-    mockCompanyEntry.setName("Triply");
-    return mockCompanyEntry;
-  }
+    when(companyService.save(any())).thenReturn(companyEntry);
 
-  private static VehicleModelEntity getMockVehicleModelEntity() {
-    final VehicleModelEntity mockVehicleModelEntity = new VehicleModelEntity();
-    mockVehicleModelEntity.setMake("Volvo");
-    mockVehicleModelEntity.setName("Brand");
-    mockVehicleModelEntity.setFuelType(FuelType.DIESEL);
-    return mockVehicleModelEntity;
+    CompanyEntry result = companyFacade.createCompany(companyEntry);
+
+    assertEquals(companyEntity.getName(), result.getName());
+    verify(companyService, times(1)).save(any());
   }
 }
