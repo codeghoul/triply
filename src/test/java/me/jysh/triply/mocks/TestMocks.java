@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import me.jysh.triply.constant.Constants;
 import me.jysh.triply.dtos.enums.FuelType;
 import me.jysh.triply.entity.CompanyEntity;
 import me.jysh.triply.entity.EmployeeEntity;
@@ -123,7 +124,7 @@ public final class TestMocks {
     EmployeeEntity employeeEntity = new EmployeeEntity();
     employeeEntity.setId(1L);
     employeeEntity.setUsername("john_doe");
-    employeeEntity.setPassword("password");
+    employeeEntity.setPassword("$2a$09$61n5rmDgufRunUN7LH7JwutvrRDVwr61FHNudUy1dpiP4j1a777g2");
     employeeEntity.setCompanyId(1L);
 
     Collection<RoleEntity> roles = new ArrayList<>();
@@ -154,10 +155,10 @@ public final class TestMocks {
   public static List<RoleEntity> getRoleEntities() {
     final RoleEntity userRole = new RoleEntity();
     userRole.setId(1L);
-    userRole.setName("ROLE_USER");
+    userRole.setName(Constants.ROLE_COMPANY_EMPLOYEE);
     final RoleEntity adminRole = new RoleEntity();
     adminRole.setId(2L);
-    adminRole.setName("ROLE_ADMIN");
+    adminRole.setName(Constants.ROLE_COMPANY_ADMIN);
     return Arrays.asList(
         userRole,
         adminRole
@@ -167,7 +168,7 @@ public final class TestMocks {
   private static RoleEntity getRoleEntity() {
     RoleEntity roleEntity = new RoleEntity();
     roleEntity.setId(1L);
-    roleEntity.setName("ROLE_USER");
+    roleEntity.setName(Constants.ROLE_COMPANY_ADMIN);
     return roleEntity;
   }
 
@@ -201,6 +202,7 @@ public final class TestMocks {
 
   public static VehicleEntity getVehicleEntity() {
     VehicleEntity mockVehicleEntity = new VehicleEntity();
+    mockVehicleEntity.setId(1L);
     mockVehicleEntity.setRegistrationNumber("Registration Number");
     final VehicleModelEntity mockVehicleModelEntity = getVehicleModelEntity();
     mockVehicleEntity.setVehicleModel(mockVehicleModelEntity);

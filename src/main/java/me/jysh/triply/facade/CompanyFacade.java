@@ -88,6 +88,11 @@ public class CompanyFacade {
 
       final List<CompanyFleetUploadEntry> entries = CsvUtils.multipartFileToEntry(file,
           CompanyFleetUploadEntry.class);
+
+      if (entries.isEmpty()) {
+        throw new BadRequestException("Uploaded file is either invalid or empty.");
+      }
+
       final Map<String, VehicleModelEntity> vehicleModelMap = getVehicleModels(entries);
 
       final List<EmployeeEntity> employeeEntities = new ArrayList<>();
@@ -130,6 +135,9 @@ public class CompanyFacade {
 
       final List<CompanyFleetMileageUploadEntry> entries = CsvUtils.multipartFileToEntry(file,
           CompanyFleetMileageUploadEntry.class);
+      if (entries.isEmpty()) {
+        throw new BadRequestException("Uploaded file is either invalid or empty.");
+      }
 
       final Map<String, EmployeeEntity> employees = getExistingEmployeesForMileageUpload(
           entries, companyEntry);

@@ -36,6 +36,16 @@ public class SecurityConfig implements WebMvcConfigurer {
     registry.addInterceptor(authZInterceptor);
   }
 
+  /**
+   * Provides a BCryptPasswordEncoder as a Spring Bean for password encoding.
+   * <p>
+   * This method configures and returns an instance of {@link BCryptPasswordEncoder}, which is a
+   * widely-used password hashing algorithm. It is recommended for securing user passwords in a
+   * secure and irreversible manner.
+   * </p>
+   *
+   * @return An instance of {@link BCryptPasswordEncoder} for password encoding.
+   */
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();

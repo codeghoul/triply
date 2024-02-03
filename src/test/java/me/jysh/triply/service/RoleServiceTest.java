@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import me.jysh.triply.constant.Constants;
 import me.jysh.triply.entity.RoleEntity;
 import me.jysh.triply.mocks.TestMocks;
 import me.jysh.triply.repository.RoleRepository;
@@ -32,7 +33,8 @@ class RoleServiceTest {
   @Test
   void testGetRoleEntityMap() {
 
-    Collection<String> roles = Arrays.asList("ROLE_USER", "ROLE_ADMIN");
+    Collection<String> roles = Arrays.asList(Constants.ROLE_COMPANY_EMPLOYEE,
+        Constants.ROLE_COMPANY_ADMIN);
     final List<RoleEntity> roleEntities = TestMocks.getRoleEntities();
 
     when(roleRepository.findAllByNameIn(roles)).thenReturn(roleEntities);
@@ -41,7 +43,7 @@ class RoleServiceTest {
 
     assertNotNull(result);
     assertEquals(2, result.size());
-    assertTrue(result.containsKey("ROLE_USER"));
-    assertTrue(result.containsKey("ROLE_ADMIN"));
+    assertTrue(result.containsKey(Constants.ROLE_COMPANY_EMPLOYEE));
+    assertTrue(result.containsKey(Constants.ROLE_COMPANY_ADMIN));
   }
 }
