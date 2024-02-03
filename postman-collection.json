@@ -1,0 +1,382 @@
+{
+	"info": {
+		"_postman_id": "f11d4f94-776e-4b1b-9cc4-fa7887e1fe4a",
+		"name": "Triply Postman Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30667505"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"JOHN_DOE\",\n    \"password\": \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/triply/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"triply",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tokens\": {\n        \"accessToken\": \"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKT0hOX0RPRSIsInVpZCI6MSwiY2lkIjoxLCJyb2xlcyI6WyJST0xFX1NVUEVSX0FETUlOIiwiUk9MRV9DT01QQU5ZX0FETUlOIiwiUk9MRV9DT01QQU5ZX0VNUExPWUVFIl0sImlhdCI6MTcwNjk4MDkyMSwiZXhwIjoxNzA2OTg0NTIxfQ.3_eOm_xXsctdXnxwv8uVsak_OV1iWOD4jUiSKL3nUgNBqeSZxQfPpb_L8Sq6G3XRTiQhXJlHm6_oGBf6981AWw\",\n        \"refreshToken\": \"b0aa78de-06b5-4685-b3fe-5da64e0c926e\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/triply/auth/refresh",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"triply",
+						"auth",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload Vehicle Models",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKT0hOX0RPRSIsInVpZCI6MSwiY2lkIjoxLCJyb2xlcyI6WyJST0xFX1NVUEVSX0FETUlOIiwiUk9MRV9DT01QQU5ZX0FETUlOIiwiUk9MRV9DT01QQU5ZX0VNUExPWUVFIl0sImlhdCI6MTcwNjg3OTQ5MywiZXhwIjoxNzA2ODgzMDkzfQ.jZNgsFJ_kzfX6b7VVyhz-b6AaQ2q-td-LTiXNxAV2tru4npKN2T3RdTgqp9eK53P2Lp0cZAAFkWTLtp-zzktLQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/jysh/Workspace/lld/triply/src/main/resources/static/vehicle-models.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/triply/vehicle-models:upload",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"triply",
+						"vehicle-models:upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Company",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDEwMSIsInVpZCI6MSwiY2lkIjoxLCJyb2xlcyI6WyJST0xFX1NVUEVSX0FETUlOIiwiUk9MRV9DT01QQU5ZX0FETUlOIiwiUk9MRV9DT01QQU5ZX0VNUExPWUVFIl0sImlhdCI6MTcwNjg2MTA5MSwiZXhwIjoxNzA2ODYxMzkxfQ.Ch2dxEfwJ2bKWuEJ-DLCqpAll82e_D8-i9-lmY-lyys8AGTAznieAiBfssWx-4ZFDlvFXt-0eqtNDJRvLurv7A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Second Client\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/triply/company",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"triply",
+						"company"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Company Emission Summary",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFTVAwMDIiLCJ1aWQiOjMsImNpZCI6Miwicm9sZXMiOlsiUk9MRV9DT01QQU5ZX0FETUlOIiwiUk9MRV9DT01QQU5ZX0VNUExPWUVFIl0sImlhdCI6MTcwNjk4MDg2NCwiZXhwIjoxNzA2OTg0NDY0fQ.MZBKOzNHqTY6SccJfkTXczRqWM2m_2geFWkBgpM6FKrBXwW7I7MjAt9nlqMPxUN2UHU907Xx64dWz8Ra-_CaJA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/triply/company/2/emissions:summary",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"triply",
+						"company",
+						"2",
+						"emissions:summary"
+					],
+					"query": [
+						{
+							"key": "week",
+							"value": "2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Employee Emission Summary",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFTVAwMDIiLCJ1aWQiOjMsImNpZCI6Miwicm9sZXMiOlsiUk9MRV9DT01QQU5ZX0FETUlOIiwiUk9MRV9DT01QQU5ZX0VNUExPWUVFIl0sImlhdCI6MTcwNjk4MDg2NCwiZXhwIjoxNzA2OTg0NDY0fQ.MZBKOzNHqTY6SccJfkTXczRqWM2m_2geFWkBgpM6FKrBXwW7I7MjAt9nlqMPxUN2UHU907Xx64dWz8Ra-_CaJA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/triply/employee/3/emissions:summary",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"triply",
+						"employee",
+						"3",
+						"emissions:summary"
+					],
+					"query": [
+						{
+							"key": "week",
+							"value": "2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Suggestions",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFTVAwMDIiLCJ1aWQiOjMsImNpZCI6Miwicm9sZXMiOlsiUk9MRV9DT01QQU5ZX0FETUlOIiwiUk9MRV9DT01QQU5ZX0VNUExPWUVFIl0sImlhdCI6MTcwNjk4MDg2NCwiZXhwIjoxNzA2OTg0NDY0fQ.MZBKOzNHqTY6SccJfkTXczRqWM2m_2geFWkBgpM6FKrBXwW7I7MjAt9nlqMPxUN2UHU907Xx64dWz8Ra-_CaJA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/triply/employee/3/vehicle-model/suggestions",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"triply",
+						"employee",
+						"3",
+						"vehicle-model",
+						"suggestions"
+					],
+					"query": [
+						{
+							"key": "week",
+							"value": "2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload Company Employees",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKT0hOX0RPRSIsInVpZCI6MSwiY2lkIjoxLCJyb2xlcyI6WyJST0xFX1NVUEVSX0FETUlOIiwiUk9MRV9DT01QQU5ZX0FETUlOIiwiUk9MRV9DT01QQU5ZX0VNUExPWUVFIl0sImlhdCI6MTcwNjk4MDkyMSwiZXhwIjoxNzA2OTg0NTIxfQ.3_eOm_xXsctdXnxwv8uVsak_OV1iWOD4jUiSKL3nUgNBqeSZxQfPpb_L8Sq6G3XRTiQhXJlHm6_oGBf6981AWw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/jysh/Workspace/lld/triply/src/main/resources/static/company1-data.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/triply/company/2/employees:upload",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"triply",
+						"company",
+						"2",
+						"employees:upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload Employee Mileage",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFTVAwMDIiLCJ1aWQiOjMsImNpZCI6Miwicm9sZXMiOlsiUk9MRV9DT01QQU5ZX0FETUlOIiwiUk9MRV9DT01QQU5ZX0VNUExPWUVFIl0sImlhdCI6MTcwNjk4MDg2NCwiZXhwIjoxNzA2OTg0NDY0fQ.MZBKOzNHqTY6SccJfkTXczRqWM2m_2geFWkBgpM6FKrBXwW7I7MjAt9nlqMPxUN2UHU907Xx64dWz8Ra-_CaJA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"contentType": "text/csv",
+							"type": "file",
+							"src": "/Users/jysh/Workspace/lld/triply/src/main/resources/static/company1-mileage.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/triply/company/2/employees/mileage:upload?year=2024&month=FEBRUARY&week=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"triply",
+						"company",
+						"2",
+						"employees",
+						"mileage:upload"
+					],
+					"query": [
+						{
+							"key": "year",
+							"value": "2024"
+						},
+						{
+							"key": "month",
+							"value": "FEBRUARY"
+						},
+						{
+							"key": "week",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

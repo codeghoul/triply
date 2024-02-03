@@ -96,7 +96,7 @@ HYDROGEN
 | Toyota | Corolla | REGULAR_GASOLINE | 120.5         |
 | Honda  | Accord  | REGULAR_GASOLINE | 130.2         |
 
-- [Global Vehicle Models Upload](src/main/resources/static/vehicle-models.csv)
+- [Global Vehicle Models Upload](data/vehicle-models.csv)
 
 ### Company Employees Upload CSV Format
 
@@ -105,8 +105,8 @@ HYDROGEN
 | EMP001     | password123   | ABC123             | Corolla      | FALSE |
 | EMP002     | securePass456 | ABC124             | Accord       | TRUE  |
 
-- [Company 1 Upload](src/main/resources/static/company1-data.csv)
-- [Company 2 Upload](src/main/resources/static/company2-data.csv)
+- [Company 1 Upload](data/company1-data.csv)
+- [Company 2 Upload](data/company2-data.csv)
 
 ### Company Employees Emission Upload CSV Format
 
@@ -115,8 +115,8 @@ HYDROGEN
 | EMP001     | 150.5                 | 30.2           | 15.7         |
 | EMP002     | 180.3                 | 35.1           | 18.5         |
 
-- [Company 1 Upload](src/main/resources/static/company1-mileage.csv)
-- [Company 2 Upload](src/main/resources/static/company2-mileage.csv)
+- [Company 1 Upload](data/company1-mileage.csv)
+- [Company 2 Upload](data/company2-mileage.csv)
 
 ## Calculations
 
@@ -146,6 +146,7 @@ and `refresh_token`. Refer to the provided SQL script for the complete schema.
 4. All tables would be created using flyway and seeded with initial data.
 5. Super Admin EmployeeId: JOHN_DOE, Password: password
 6. Check: http://localhost:8080/api/v1/triply/swagger-ui/index.html for API documentation.
+7. Or use this postman collection to get started: [Collection](postman-collection.json)
 
 ## Testing
 
